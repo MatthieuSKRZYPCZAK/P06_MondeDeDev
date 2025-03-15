@@ -1,9 +1,10 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.AuthenticationDTO;
-import com.openclassrooms.mddapi.dto.AuthentificationResponseDTO;
+import com.openclassrooms.mddapi.dto.AuthenticationResponseDTO;
 import com.openclassrooms.mddapi.dto.RegistrationDTO;
 import com.openclassrooms.mddapi.dto.UserDTO;
+import com.openclassrooms.mddapi.exception.AuthenticationFailedException;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.security.JwtService;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import static com.openclassrooms.mddapi.common.ApiRoutes.*;
-import static com.openclassrooms.mddapi.common.ResponseMessages.INVALID_IDENTIFIER;
+import static com.openclassrooms.mddapi.common.ResponseMessages.AUTHENTICATION_FAILED;
+import static com.openclassrooms.mddapi.common.ResponseMessages.INTERNAL_SERVER_ERROR;
 
 @RestController
 public class AuthController {
@@ -36,25 +38,35 @@ public class AuthController {
 	}
 
 	@PostMapping(LOGIN_URL)
-	public ResponseEntity<AuthentificationResponseDTO> login(@Valid @RequestBody AuthenticationDTO request)  {
-		Authentication authentication = userService.authenticate(request);
+	public ResponseEntity<AuthenticationResponseDTO> login(@Valid @RequestBody AuthenticationDTO request)  {
+
+		Authentication authentication = userService.authenticate(request.identifier(), request.password());
+		if(!authentication.isAuthenticated()) {
+			throw new AuthenticationFailedException(AUTHENTICATION_FAILED);
+		}
 
 		UserEntity userEntity = userService.getUserAuthenticated(authentication);
 		UserDTO userDTO = userMapper.userEntityToUserDTO(userEntity);
 		String token = jwtService.generateToken(authentication);
 
-		return ResponseEntity.ok(new AuthentificationResponseDTO(token, userDTO));
+		return ResponseEntity.ok(new AuthenticationResponseDTO(token, userDTO));
 	}
 
 	@PostMapping(REGISTER_URL)
-	public ResponseEntity<AuthentificationResponseDTO> register(@Valid @RequestBody RegistrationDTO request) {
-		userService.register(request);
-		Authentication authentication = userService.authenticate(new AuthenticationDTO(request.email(), request.password()));
+	public ResponseEntity<AuthenticationResponseDTO> register(@Valid @RequestBody RegistrationDTO request) {
+		UserEntity savedUser = userService.register(request);
 
-		UserEntity userEntity = userService.getUserAuthenticated(authentication);
-		UserDTO userDTO = userMapper.userEntityToUserDTO(userEntity);
+		Authentication authentication = userService.authenticate(savedUser.getEmail(), request.password());
+		if(!authentication.isAuthenticated()) {
+			throw new AuthenticationFailedException(AUTHENTICATION_FAILED);
+		}
+
+		UserDTO userDTO = userMapper.userEntityToUserDTO(savedUser);
 		String token = jwtService.generateToken(authentication);
+		if(token == null || token.isEmpty()) {
+			throw new RuntimeException(INTERNAL_SERVER_ERROR);
+		}
 
-		return ResponseEntity.ok(new AuthentificationResponseDTO(token, userDTO));
+		return ResponseEntity.ok(new AuthenticationResponseDTO(token, userDTO));
 	}
 }

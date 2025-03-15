@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.dto.AuthenticationDTO;
 import com.openclassrooms.mddapi.dto.RegistrationDTO;
 import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.mapper.UserMapper;
@@ -8,7 +7,7 @@ import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.security.UserDetailsImpl;
 import com.openclassrooms.mddapi.util.PasswordValidator;
-import jakarta.validation.Valid;
+import com.openclassrooms.mddapi.util.UsernameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,26 +29,30 @@ public class UserService  {
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final UserMapper userMapper;
 	private final PasswordValidator passwordValidator;
+	private final UsernameValidator usernameValidator;
 
 	@Autowired
-	public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, PasswordValidator passwordValidator) {
+	public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, PasswordValidator passwordValidator, UsernameValidator usernameValidator) {
 		this.userRepository = userRepository;
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.userMapper = userMapper;
 		this.passwordValidator = passwordValidator;
+		this.usernameValidator = usernameValidator;
 	}
 
-	public Authentication authenticate(@Valid AuthenticationDTO request) {
+	/**
+	 * Authentifie un utilisateur en fonction de son email ou username
+	 */
+	public Authentication authenticate(String identifier, String password) {
 
-		UserEntity user = userRepository.findByEmail(request.identifier())
-				.orElseGet(() -> userRepository.findByUsername(request.identifier())
+		UserEntity user = userRepository.findByEmail(identifier)
+				.orElseGet(() -> userRepository.findByUsername(identifier)
 						.orElseThrow(() -> new BadCredentialsException(INVALID_IDENTIFIER)));
-
 
 		try {
 			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(user.getEmail(), request.password()));
+					new UsernamePasswordAuthenticationToken(user.getEmail(), password));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			return authentication;
 		}catch(AuthenticationException e) {
@@ -57,29 +60,54 @@ public class UserService  {
 		}
 	}
 
-	public void register(RegistrationDTO user) {
-		userExist(user);
-		if(!passwordValidator.isValidPassword(user.password())){
-			throw new InvalidPasswordException(INVALID_PASSWORD);
-		}
+	/**
+	 * Inscrit un nouvel utilisateur après vérifications
+	 */
+	public UserEntity register(RegistrationDTO request) {
+		validateUserUniqueness(request);
+		validatePassword(request.password());
+		validateUsername(request.username());
 
-		UserEntity userEntity = userMapper.registrationUserToUserEntity(user);
-		userEntity.setPassword(passwordEncoder.encode(user.password()));
-		userRepository.save(userEntity);
+		UserEntity newUser = userMapper.registrationUserToUserEntity(request);
+		newUser.setPassword(passwordEncoder.encode(request.password()));
+
+		return userRepository.save(newUser);
 	}
 
-	public void userExist(RegistrationDTO user) {
-		boolean existsByUsername = userRepository.existsByUsername(user.username());
-		boolean existsByEmail = userRepository.existsByEmail(user.email());
-		if (existsByEmail) {
+	/**
+	 * Vérifie si l'utilisateur existe déjà avec cet email ou username
+	 */
+	private void validateUserUniqueness(RegistrationDTO user) {
+		if (userRepository.existsByEmail(user.email())) {
 			throw new EmailAlreadyExistsException(EMAIL_ALREADY_EXISTS);
 		}
 
-		if(existsByUsername) {
+		if(userRepository.existsByUsername(user.username())) {
 			throw new UsernameAlreadyExistsException(USERNAME_ALREADY_EXISTS);
 		}
 	}
 
+	/**
+	 * Vérifie si le mot de passe respecte les critères de sécurité
+	 */
+	private void validatePassword(String password) {
+		if(!passwordValidator.isValidPassword(password)) {
+			throw new InvalidPasswordException(INVALID_PASSWORD);
+		}
+	}
+
+	/**
+	 * Vérifie si le nom d'utilisateur est conforme aux règles
+	 */
+	private void validateUsername(String username) {
+		if (!usernameValidator.isValidUsername(username)) {
+			throw new InvalidUsernameException(INVALID_USERNAME);
+		}
+	}
+
+	/**
+	 * Récupère l'utilisateur authentifié à partir de l'objet Authentication
+	 */
 	public UserEntity getUserAuthenticated(Authentication authentication) {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		return userRepository.findByEmail(userDetails.getEmail()).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
