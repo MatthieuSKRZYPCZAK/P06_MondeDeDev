@@ -16,6 +16,7 @@ public class UsernameValidator {
 	 *   <li><b>Peut contenir des chiffres.</b></li>
 	 *   <li><b>Ne doit pas contenir d'espaces ni de caractères spéciaux.</b></li>
 	 *   <li><b>Ne doit pas contenir plus de 5 chiffres consécutifs.</b></li>
+	 *   <li><b>Doit contenir au moins 3 lettres.</b></li>
 	 * </ul>
 	 *
 	 * <p><b>Explication de la regex :</b></p>
@@ -38,6 +39,12 @@ public class UsernameValidator {
 	 * @return {@code true} si le nom d'utilisateur est valide, sinon {@code false}.
 	 */
 	public boolean isValidUsername(String username) {
-		return username.matches(USERNAME_PATTERN);
+		if(!username.matches(USERNAME_PATTERN)) {
+			return false;
+		}
+
+		// Vérification que le pseudo contient au moins 3 lettres
+		long letterCount = username.chars().filter(Character::isLetter).count();
+		return letterCount >= 3;
 	}
 }

@@ -17,7 +17,7 @@ public class ResponseMessages {
 	public static final String EMAIL_ALREADY_EXISTS = "Email already exists.";
 	public static final String USERNAME_ALREADY_EXISTS = "Username already exists.";
 	public static final String USER_NOT_FOUND = "User not found.";
-	public static final String INVALID_USERNAME = "Username must be between 3 and 20 characters, contain only letters and numbers, and must not have more than 5 consecutive digits. Spaces and special characters are not allowed.";
+	public static final String INVALID_USERNAME = "Username must be between 3 and 20 characters, contain at least 3 letters, and must not have more than 5 consecutive digits. Only letters and numbers are allowed. Spaces and special characters are not permitted.";
 
 	// Password-related messages
 	public static final String INVALID_PASSWORD = "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character.";
