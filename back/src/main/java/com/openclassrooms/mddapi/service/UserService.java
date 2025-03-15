@@ -2,10 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.dto.AuthenticationDTO;
 import com.openclassrooms.mddapi.dto.RegistrationDTO;
-import com.openclassrooms.mddapi.exception.EmailAlreadyExistsException;
-import com.openclassrooms.mddapi.exception.InvalidPasswordException;
-import com.openclassrooms.mddapi.exception.UserNotFoundException;
-import com.openclassrooms.mddapi.exception.UsernameAlreadyExistsException;
+import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -46,11 +43,9 @@ public class UserService  {
 	public Authentication authenticate(@Valid AuthenticationDTO request) {
 
 		UserEntity user = userRepository.findByEmail(request.identifier())
-				.orElse(userRepository.findByUsername(request.identifier()).orElse(null));
+				.orElseGet(() -> userRepository.findByUsername(request.identifier())
+						.orElseThrow(() -> new BadCredentialsException(INVALID_IDENTIFIER)));
 
-		if (user == null) {
-			throw new UserNotFoundException(USER_NOT_FOUND);
-		}
 
 		try {
 			Authentication authentication = authenticationManager.authenticate(

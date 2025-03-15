@@ -4,7 +4,6 @@ import com.openclassrooms.mddapi.dto.AuthenticationDTO;
 import com.openclassrooms.mddapi.dto.AuthentificationResponseDTO;
 import com.openclassrooms.mddapi.dto.RegistrationDTO;
 import com.openclassrooms.mddapi.dto.UserDTO;
-import com.openclassrooms.mddapi.exception.AuthenticationFailedException;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.security.JwtService;
@@ -39,9 +38,6 @@ public class AuthController {
 	@PostMapping(LOGIN_URL)
 	public ResponseEntity<AuthentificationResponseDTO> login(@Valid @RequestBody AuthenticationDTO request)  {
 		Authentication authentication = userService.authenticate(request);
-		if(authentication.isAuthenticated()) {
-			throw new AuthenticationFailedException(INVALID_IDENTIFIER);
-		}
 
 		UserEntity userEntity = userService.getUserAuthenticated(authentication);
 		UserDTO userDTO = userMapper.userEntityToUserDTO(userEntity);
@@ -54,12 +50,11 @@ public class AuthController {
 	public ResponseEntity<AuthentificationResponseDTO> register(@Valid @RequestBody RegistrationDTO request) {
 		userService.register(request);
 		Authentication authentication = userService.authenticate(new AuthenticationDTO(request.email(), request.password()));
-		if(!authentication.isAuthenticated()) {
-			throw new AuthenticationFailedException(INVALID_IDENTIFIER);
-		}
+
 		UserEntity userEntity = userService.getUserAuthenticated(authentication);
 		UserDTO userDTO = userMapper.userEntityToUserDTO(userEntity);
 		String token = jwtService.generateToken(authentication);
+
 		return ResponseEntity.ok(new AuthentificationResponseDTO(token, userDTO));
 	}
 }
