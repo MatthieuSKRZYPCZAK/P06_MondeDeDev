@@ -12,6 +12,7 @@ public class ResponseMessages {
 	public static final String EMAIL_NOT_BLANK = "The email cannot be empty.";
 	public static final String USERNAME_NOT_BLANK = "The username cannot be empty.";
 	public static final String INVALID_EMAIL = "Invalid email format";
+	public static final String INVALID_JWT = "Invalid or missing JWT token";
 
 	// User-related errors
 	public static final String EMAIL_ALREADY_EXISTS = "Email already exists.";

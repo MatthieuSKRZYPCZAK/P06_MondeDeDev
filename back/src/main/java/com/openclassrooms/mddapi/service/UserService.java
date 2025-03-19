@@ -1,13 +1,14 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.dto.RegistrationDTO;
+import com.openclassrooms.mddapi.dto.UserDTO;
 import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import com.openclassrooms.mddapi.security.UserDetailsImpl;
 import com.openclassrooms.mddapi.util.PasswordValidator;
 import com.openclassrooms.mddapi.util.UsernameValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.openclassrooms.mddapi.common.ResponseMessages.*;
 
@@ -63,6 +65,7 @@ public class UserService  {
 	/**
 	 * Inscrit un nouvel utilisateur après vérifications
 	 */
+	@Transactional
 	public UserEntity register(RegistrationDTO request) {
 		validateUserUniqueness(request);
 		validatePassword(request.password());
@@ -106,10 +109,20 @@ public class UserService  {
 	}
 
 	/**
-	 * Récupère l'utilisateur authentifié à partir de l'objet Authentication
+	 * Récupère l'utilisateur authentifié
 	 */
-	public UserEntity getUserAuthenticated(Authentication authentication) {
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		return userRepository.findByEmail(userDetails.getEmail()).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+	public UserEntity getUserAuthenticated() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 	}
+
+	@Transactional
+	public UserEntity updateUser(@Valid UserDTO userDTO) {
+		UserEntity user = getUserAuthenticated();
+		user.setUsername(userDTO.username());
+		user.setEmail(userDTO.email());
+
+		return userRepository.save(user);
+	}
+
 }
