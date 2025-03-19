@@ -14,14 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 import static com.openclassrooms.mddapi.common.ApiRoutes.*;
-import static com.openclassrooms.mddapi.common.ResponseMessages.AUTHENTICATION_FAILED;
-import static com.openclassrooms.mddapi.common.ResponseMessages.INTERNAL_SERVER_ERROR;
+import static com.openclassrooms.mddapi.common.ResponseMessages.*;
 
 @RestController
 public class AuthController {
@@ -45,7 +41,7 @@ public class AuthController {
 			throw new AuthenticationFailedException(AUTHENTICATION_FAILED);
 		}
 
-		UserEntity userEntity = userService.getUserAuthenticated(authentication);
+		UserEntity userEntity = userService.getUserAuthenticated();
 		UserDTO userDTO = userMapper.userEntityToUserDTO(userEntity);
 		String token = jwtService.generateToken(authentication);
 
@@ -61,12 +57,19 @@ public class AuthController {
 			throw new AuthenticationFailedException(AUTHENTICATION_FAILED);
 		}
 
-		UserDTO userDTO = userMapper.userEntityToUserDTO(savedUser);
 		String token = jwtService.generateToken(authentication);
 		if(token == null || token.isEmpty()) {
 			throw new RuntimeException(INTERNAL_SERVER_ERROR);
 		}
 
+		UserDTO userDTO = userMapper.userEntityToUserDTO(savedUser);
 		return ResponseEntity.ok(new AuthenticationResponseDTO(token, userDTO));
+	}
+
+	@GetMapping(ME_URL)
+	public ResponseEntity<UserDTO> getUserAuthenticated() {
+		UserEntity user = userService.getUserAuthenticated();
+		UserDTO userDTO = userMapper.userEntityToUserDTO(user);
+		return ResponseEntity.ok(userDTO);
 	}
 }
