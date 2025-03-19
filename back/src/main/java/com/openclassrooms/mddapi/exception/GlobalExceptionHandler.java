@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
 
@@ -131,5 +132,18 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(e.getMessage()));
+	}
+
+	@ExceptionHandler(TopicNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleTopicNotFoundException(TopicNotFoundException e) {
+		logger.info(e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+		logger.info(e.getMessage());
+		String errorMessage = INVALID_PARAMETER.replace("{param}", e.getName());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errorMessage));
 	}
 }
