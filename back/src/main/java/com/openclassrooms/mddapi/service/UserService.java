@@ -2,7 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.dto.PasswordUpdateDTO;
 import com.openclassrooms.mddapi.dto.RegistrationDTO;
-import com.openclassrooms.mddapi.dto.UserDTO;
+import com.openclassrooms.mddapi.dto.UserUpdateDTO;
 import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.TopicEntity;
@@ -13,7 +13,6 @@ import com.openclassrooms.mddapi.util.PasswordValidator;
 import com.openclassrooms.mddapi.util.UsernameValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -119,67 +118,98 @@ public class UserService  {
 	 */
 	public UserEntity getUserAuthenticated() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+		return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new InvalidJwtException(EXPIRED_JWT));
 	}
 
 	@Transactional
-	public UserEntity updateUser(@Valid UserDTO userDTO, Long userId) {
-		UserEntity user = verifyAccess(userId);
+	public UserEntity updateUser(@Valid UserUpdateDTO userUpdateDTO, UserEntity authenticatedUser) {
 
-		validateUsername(userDTO.username());
+		boolean isEmailChanged = !authenticatedUser.getEmail().equals(userUpdateDTO.email());
+		boolean isUsernameChanged = !authenticatedUser.getUsername().equals(userUpdateDTO.username());
 
-		user.setUsername(userDTO.username());
-		user.setEmail(userDTO.email());
+		if(isEmailChanged) {
+			validateEmailUniqueness(userUpdateDTO.email(), authenticatedUser.getId());
+			authenticatedUser.setEmail(userUpdateDTO.email());
+		}
 
-		return userRepository.save(user);
+		if(isUsernameChanged) {
+			validateUsernameUniqueness(userUpdateDTO.username(), authenticatedUser.getId());
+			validateUsername(userUpdateDTO.username());
+			authenticatedUser.setUsername(userUpdateDTO.username());
+		}
+
+		return userRepository.save(authenticatedUser);
+	}
+
+	private void validateUsernameUniqueness(String username, Long userId) {
+		boolean usernameExists = userRepository.existsByUsername(username);
+
+		if(usernameExists) {
+			UserEntity existingUser = userRepository.findByUsername(username)
+					.orElseThrow(() -> new UsernameAlreadyExistsException(USERNAME_ALREADY_EXISTS));
+
+			if (!existingUser.getId().equals(userId)) {
+				throw new UsernameAlreadyExistsException(USERNAME_ALREADY_EXISTS);
+			}
+		}
+	}
+
+	private void validateEmailUniqueness(String email, Long userId) {
+		boolean emailExists = userRepository.existsByEmail(email);
+
+		if(emailExists) {
+			UserEntity existingUser = userRepository.findByEmail(email)
+					.orElseThrow(() -> new EmailAlreadyExistsException(EMAIL_ALREADY_EXISTS));
+
+			if (!existingUser.getId().equals(userId)) {
+				throw new EmailAlreadyExistsException(EMAIL_ALREADY_EXISTS);
+			}
+		}
 	}
 
 	@Transactional
-	public UserEntity subscribeToTopic(Long topicId, UserEntity user) {
-		UserEntity userVerify = verifyAccess(user.getId());
+	public UserEntity subscribeToTopic(Long topicId, UserEntity authenticatedUser) {
 		TopicEntity topic = topicRepository.findById(topicId).orElseThrow(() -> new TopicNotFoundException(TOPIC_NOT_FOUND));
 
-		if(userVerify.getTopics().contains(topic)) {
-			return userVerify;
+		if(authenticatedUser.getTopics().contains(topic)) {
+			return authenticatedUser;
 		}
 
-		user.getTopics().add(topic);
-		return userRepository.save(userVerify);
+		authenticatedUser.getTopics().add(topic);
+		return userRepository.save(authenticatedUser);
 	}
 
 	@Transactional
-	public UserEntity unsubscribeFromTopic(Long topicId, UserEntity user) {
-		UserEntity userVerify = verifyAccess(user.getId());
+	public UserEntity unsubscribeFromTopic(Long topicId, UserEntity authenticatedUser) {
 		TopicEntity topic = topicRepository.findById(topicId).orElseThrow(() -> new TopicNotFoundException(TOPIC_NOT_FOUND));
 
-		if(!userVerify.getTopics().contains(topic)) {
-			return userVerify;
+		if(!authenticatedUser.getTopics().contains(topic)) {
+			return authenticatedUser;
 		}
 
-		userVerify.getTopics().remove(topic);
-		return userRepository.save(userVerify);
+		authenticatedUser.getTopics().remove(topic);
+		return userRepository.save(authenticatedUser);
 	}
 
-	private UserEntity verifyAccess(Long id) {
-		UserEntity authenticatedUser = getUserAuthenticated();
 
-		if(!authenticatedUser.getId().equals(id)) {
-			throw new AccessDeniedException(ACCESS_DENIED);
-		}
-
-		return authenticatedUser;
-	}
 
 	@Transactional
-	public void updatePassword(@Valid PasswordUpdateDTO passwordUpdateDTO, UserEntity userAuth) {
-		UserEntity user = verifyAccess(userAuth.getId());
+	public void updatePassword(@Valid PasswordUpdateDTO passwordUpdateDTO, UserEntity authenticatedUser) {
 
-		if(!passwordEncoder.matches(passwordUpdateDTO.oldPassword(), user.getPassword())) {
+		if(!passwordEncoder.matches(passwordUpdateDTO.oldPassword(), authenticatedUser.getPassword())) {
 			throw new InvalidPasswordException(INVALID_OLD_PASSWORD);
 		}
 
+		if(passwordEncoder.matches(passwordUpdateDTO.newPassword(), authenticatedUser.getPassword())) {
+			throw new InvalidPasswordException(NEW_PASSWORD_MUST_BE_DIFFERENT);
+		}
+
 		validatePassword(passwordUpdateDTO.newPassword());
-		user.setPassword(passwordEncoder.encode(passwordUpdateDTO.newPassword()));
-		userRepository.save(user);
+		authenticatedUser.setPassword(passwordEncoder.encode(passwordUpdateDTO.newPassword()));
+		userRepository.save(authenticatedUser);
+	}
+
+	public UserEntity findByEmail(String email) {
+		return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 	}
 }

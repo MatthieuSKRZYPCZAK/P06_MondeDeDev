@@ -146,4 +146,16 @@ public class GlobalExceptionHandler {
 		String errorMessage = INVALID_PARAMETER.replace("{param}", e.getName());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errorMessage));
 	}
+
+	@ExceptionHandler(InvalidJwtException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidJwtException(InvalidJwtException e) {
+		logger.info(e.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
+	}
+
+	@ExceptionHandler(RefreshTokenException.class)
+	public ResponseEntity<ErrorResponse> handleRefreshTokenException(RefreshTokenException e) {
+		logger.info(e.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
+	}
 }

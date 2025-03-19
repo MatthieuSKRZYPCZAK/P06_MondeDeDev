@@ -13,6 +13,8 @@ public class ResponseMessages {
 	public static final String USERNAME_NOT_BLANK = "The username cannot be empty.";
 	public static final String INVALID_EMAIL = "Invalid email format";
 	public static final String INVALID_JWT = "Invalid or missing JWT token";
+	public static final String EXPIRED_JWT = "Your session has expired. Please log in again.";
+	public static final String REFRESH_TOKEN_NOT_FOUND = "No refresh token found.";
 
 	// User-related errors
 	public static final String EMAIL_ALREADY_EXISTS = "Email already exists.";
@@ -25,6 +27,7 @@ public class ResponseMessages {
 	public static final String INVALID_OLD_PASSWORD = "Old password is incorrect.";
 	public static final String OLD_PASSWORD_NOT_BLANK = "Old password is required.";
 	public static final String NEW_PASSWORD_NOT_BLANK = "New password is required.";
+	public static final String NEW_PASSWORD_MUST_BE_DIFFERENT = "New password must be different from old password.";
 	public static final String PASSWORD_UPDATE_SUCCESS = "Password updated successfully.";
 
 

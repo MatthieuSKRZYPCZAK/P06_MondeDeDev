@@ -14,6 +14,8 @@ public class ApiRoutes {
 
 	public static final String ME_URL = AUTH_URL+"/me";
 
+	public static final String JWT_REFRESH_URL = AUTH_URL+"/refresh";
+
 	/* Users URL */
 	public static final String USER_URL = BASE_URL+"/user";
 

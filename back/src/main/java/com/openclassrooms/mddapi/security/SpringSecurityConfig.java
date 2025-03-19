@@ -10,8 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.openclassrooms.mddapi.common.ApiRoutes.LOGIN_URL;
-import static com.openclassrooms.mddapi.common.ApiRoutes.REGISTER_URL;
+import static com.openclassrooms.mddapi.common.ApiRoutes.*;
 
 
 @Configuration
@@ -32,7 +31,8 @@ public class SpringSecurityConfig {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(
 								REGISTER_URL,
-								LOGIN_URL
+								LOGIN_URL,
+								JWT_REFRESH_URL
 						).permitAll() // Routes publiques
 						.anyRequest().authenticated() // Tout le reste nécessite un JWT
 				)

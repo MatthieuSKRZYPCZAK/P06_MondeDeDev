@@ -1,11 +1,11 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.dto.PasswordUpdateDTO;
-import com.openclassrooms.mddapi.dto.ResponseDTO;
-import com.openclassrooms.mddapi.dto.UserDTO;
+import com.openclassrooms.mddapi.dto.*;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.UserEntity;
+import com.openclassrooms.mddapi.security.JwtService;
 import com.openclassrooms.mddapi.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +19,24 @@ public class UserController {
 
 	private final UserService userService;
 	private final UserMapper userMapper;
+	private final JwtService jwtService;
 
-	public UserController(UserService userService, UserMapper userMapper) {
+	public UserController(UserService userService, UserMapper userMapper, JwtService jwtService) {
 		this.userService = userService;
 		this.userMapper = userMapper;
+		this.jwtService = jwtService;
 	}
 
 	@PutMapping(USER_UPDATE_URL)
-	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+	public ResponseEntity<AuthenticationResponseDTO> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO, HttpServletResponse response) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
-		UserEntity updatedUser = userService.updateUser(userDTO, authenticatedUser.getId());
-		return ResponseEntity.ok(userMapper.userEntityToUserDTO(updatedUser));
+		UserEntity updatedUser = userService.updateUser(userUpdateDTO, authenticatedUser);
+
+		String newAccessToken = jwtService.generateToken(updatedUser);
+		jwtService.generateAndSetRefreshToken(updatedUser, response);
+
+		UserDTO userDTO = userMapper.userEntityToUserDTO(updatedUser);
+		return ResponseEntity.ok(new AuthenticationResponseDTO(newAccessToken, userDTO));
 	}
 
 	@PatchMapping(USER_PASSWORD_URL)
