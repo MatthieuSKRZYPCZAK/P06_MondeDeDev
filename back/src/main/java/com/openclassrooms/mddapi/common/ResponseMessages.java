@@ -22,11 +22,22 @@ public class ResponseMessages {
 
 	// Password-related messages
 	public static final String INVALID_PASSWORD = "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character.";
+	public static final String INVALID_OLD_PASSWORD = "Old password is incorrect.";
+	public static final String OLD_PASSWORD_NOT_BLANK = "Old password is required.";
+	public static final String NEW_PASSWORD_NOT_BLANK = "New password is required.";
+	public static final String PASSWORD_UPDATE_SUCCESS = "Password updated successfully.";
+
+
+	// Topic-related errors
+	public static final String TOPIC_NOT_FOUND = "Topic not found.";
 
 	// Database errors
 	public static final String DATABASE_ERROR = "Database error. Please try again later.";
 	public static final String DATA_INTEGRITY_VIOLATION = "A database integrity constraint was violated.";
 	public static final String INVALID_REQUEST = "Invalid request data.";
+
+	// Generic parameter errors
+	public static final String INVALID_PARAMETER = "Invalid parameter: {param} must be a valid number.";
 
 	// Generic Errors
 	public static final String INTERNAL_SERVER_ERROR = "Internal server error.";
