@@ -42,7 +42,7 @@ public class UserEntity {
 	@ElementCollection(targetClass = TopicEnum.class, fetch = FetchType.EAGER)
 	@CollectionTable(name = "subscriptions", joinColumns = @JoinColumn(name = "user_id"))
 	@Enumerated(EnumType.STRING)
-	@Column(name = "topic", nullable = false)
+	@Column(nullable = false)
 	private Set<TopicEnum> topics = new HashSet<>();
 
 	@CreatedDate

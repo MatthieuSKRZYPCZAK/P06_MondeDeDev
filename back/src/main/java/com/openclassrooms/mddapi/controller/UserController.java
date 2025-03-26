@@ -39,9 +39,11 @@ public class UserController {
 	}
 
 	@PatchMapping(USER_PASSWORD_URL)
-	public ResponseEntity<ResponseDTO> updatePassword(@Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+	public ResponseEntity<ResponseDTO> updatePassword(@Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO, HttpServletResponse response) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
 		userService.updatePassword(passwordUpdateDTO, authenticatedUser);
+
+		jwtService.generateAndSetRefreshToken(authenticatedUser, response);
 		return ResponseEntity.ok(new ResponseDTO(PASSWORD_UPDATE_SUCCESS));
 	}
 

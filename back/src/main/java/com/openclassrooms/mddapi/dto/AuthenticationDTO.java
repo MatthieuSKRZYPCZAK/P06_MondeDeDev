@@ -6,7 +6,6 @@ import static com.openclassrooms.mddapi.common.ResponseMessages.IDENTIFIER_NOT_B
 import static com.openclassrooms.mddapi.common.ResponseMessages.PASSWORD_NOT_BLANK;
 
 public record AuthenticationDTO(
-
 		@NotBlank(message = IDENTIFIER_NOT_BLANK)
 		String identifier,
 

@@ -15,7 +15,7 @@ import java.util.List;
 import static com.openclassrooms.mddapi.common.ResponseMessages.TOPIC_NOT_FOUND;
 
 /**
- * Mapper permettant de convertir entre les entités de type Post et leurs représentations DTO.
+ * Mapper permettant de convertir entre les entités de type PostEntity et leurs représentations DTO.
  */
 @Component
 public class PostMapper {

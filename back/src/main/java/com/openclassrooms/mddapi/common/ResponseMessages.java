@@ -1,5 +1,8 @@
 package com.openclassrooms.mddapi.common;
 
+/**
+ * Classe utilitaire contenant l’ensemble des messages de réponse utilisés dans l’application MDD.
+ */
 public class ResponseMessages {
 
 	private ResponseMessages() {}

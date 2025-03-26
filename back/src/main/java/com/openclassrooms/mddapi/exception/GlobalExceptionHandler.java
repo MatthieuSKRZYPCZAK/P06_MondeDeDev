@@ -128,36 +128,54 @@ public class GlobalExceptionHandler {
 				.body(new ErrorResponse(DATABASE_ERROR));
 	}
 
+	/**
+	 * Gère les erreurs d'accès refusé (autorisation).
+	 */
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(e.getMessage()));
 	}
 
+	/**
+	 * Gère l'exception lorsqu'un topic n'est pas trouvé.
+	 */
 	@ExceptionHandler(TopicNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleTopicNotFoundException(TopicNotFoundException e) {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
 	}
 
+	/**
+	 * Gère les erreurs de type de paramètre incorrect dans l'URL.
+	 */
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(INVALID_PARAMETER));
 	}
 
+	/**
+	 * Gère les erreurs liées à un JWT invalide.
+	 */
 	@ExceptionHandler(InvalidJwtException.class)
 	public ResponseEntity<ErrorResponse> handleInvalidJwtException(InvalidJwtException e) {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
 	}
 
+	/**
+	 * Gère les erreurs lors du rafraîchissement du token.
+	 */
 	@ExceptionHandler(RefreshTokenException.class)
 	public ResponseEntity<ErrorResponse> handleRefreshTokenException(RefreshTokenException e) {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
 	}
 
+	/**
+	 * Gère l'exception lorsqu'un article n'est pas trouvé.
+	 */
 	@ExceptionHandler(PostNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
 		logger.info(e.getMessage());
