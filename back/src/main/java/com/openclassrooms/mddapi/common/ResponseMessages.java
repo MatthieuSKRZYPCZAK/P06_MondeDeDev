@@ -47,10 +47,9 @@ public class ResponseMessages {
 	public static final String INVALID_REQUEST = "Invalid request data.";
 
 	// Generic parameter errors
-	public static final String INVALID_PARAMETER = "Invalid parameter: {param} must be a valid number.";
+	public static final String INVALID_PARAMETER = "Invalid parameter.";
 
 	// Generic Errors
 	public static final String INTERNAL_SERVER_ERROR = "Internal server error.";
-	public static final String ACCESS_DENIED = "Access denied.";
 
 }

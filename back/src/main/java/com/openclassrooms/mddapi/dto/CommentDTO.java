@@ -1,15 +1,11 @@
 package com.openclassrooms.mddapi.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public record PostDTO(
+public record CommentDTO(
 		Long id,
-		String title,
 		String content,
-		TopicDTO topic,
-		UserDTO author,
 		LocalDateTime createdAt,
-		List<CommentDTO> comments
+		UserDTO author
 ) {
 }

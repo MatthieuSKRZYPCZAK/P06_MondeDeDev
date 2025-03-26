@@ -37,5 +37,8 @@ public class ApiRoutes {
 
 	public static final String POST_DETAIL_URL = POST_URL+"/{postId}";
 
+	/* Comments URL */
+	public static final String POST_COMMENT_URL = POST_DETAIL_URL+"/comment";
+
 
 }

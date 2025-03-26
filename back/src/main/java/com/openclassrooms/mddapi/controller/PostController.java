@@ -3,8 +3,8 @@ package com.openclassrooms.mddapi.controller;
 import com.openclassrooms.mddapi.dto.PostCreateDTO;
 import com.openclassrooms.mddapi.dto.PostDTO;
 import com.openclassrooms.mddapi.mapper.PostMapper;
+import com.openclassrooms.mddapi.model.CommentEntity;
 import com.openclassrooms.mddapi.model.PostEntity;
-import com.openclassrooms.mddapi.model.TopicEnum;
 import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.service.PostService;
 import com.openclassrooms.mddapi.service.UserService;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 import static com.openclassrooms.mddapi.common.ApiRoutes.*;
 
@@ -51,7 +50,9 @@ public class PostController {
 	@GetMapping(POST_DETAIL_URL)
 	public ResponseEntity<PostDTO> getPostDetail(@PathVariable Long postId) {
 		PostEntity post = postService.getPostById(postId);
-		return ResponseEntity.ok(postMapper.toPostDto(post));
+		List<CommentEntity> comments = postService.getCommentsForPost(post);
+		PostDTO response = postMapper.toPostDto(post, comments);
+		return ResponseEntity.ok(response);
 	}
 
 }

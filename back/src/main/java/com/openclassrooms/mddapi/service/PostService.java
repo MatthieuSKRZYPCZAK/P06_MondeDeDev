@@ -3,9 +3,11 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.dto.PostCreateDTO;
 import com.openclassrooms.mddapi.exception.PostNotFoundException;
 import com.openclassrooms.mddapi.mapper.PostMapper;
+import com.openclassrooms.mddapi.model.CommentEntity;
 import com.openclassrooms.mddapi.model.PostEntity;
 import com.openclassrooms.mddapi.model.TopicEnum;
 import com.openclassrooms.mddapi.model.UserEntity;
+import com.openclassrooms.mddapi.repository.CommentRepository;
 import com.openclassrooms.mddapi.repository.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +22,12 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final PostMapper postMapper;
+	private final CommentRepository commentRepository;
 
-	public PostService(PostRepository postRepository, PostMapper postMapper) {
+	public PostService(PostRepository postRepository, PostMapper postMapper, CommentRepository commentRepository) {
 		this.postRepository = postRepository;
 		this.postMapper = postMapper;
+		this.commentRepository = commentRepository;
 	}
 
 	@Transactional
@@ -39,5 +43,9 @@ public class PostService {
 
 	public PostEntity getPostById(Long postId) {
 		return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND));
+	}
+
+	public List<CommentEntity> getCommentsForPost(PostEntity post) {
+		return commentRepository.findByPost(post);
 	}
 }

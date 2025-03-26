@@ -143,8 +143,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
 		logger.info(e.getMessage());
-		String errorMessage = INVALID_PARAMETER.replace("{param}", e.getName());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errorMessage));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(INVALID_PARAMETER));
 	}
 
 	@ExceptionHandler(InvalidJwtException.class)
