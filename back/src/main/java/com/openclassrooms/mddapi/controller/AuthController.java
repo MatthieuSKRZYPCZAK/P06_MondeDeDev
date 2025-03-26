@@ -47,7 +47,7 @@ public class AuthController {
 		}
 
 		UserEntity userEntity = userService.getUserAuthenticated();
-		UserDTO userDTO = userMapper.userEntityToUserDTO(userEntity);
+		UserDTO userDTO = userMapper.toUserDTO(userEntity);
 		String token = jwtService.generateToken(userEntity);
 
 		// Stocke le refresh token en cookie sécurisé
@@ -70,14 +70,14 @@ public class AuthController {
 		jwtService.generateAndSetRefreshToken(savedUser, response);
 
 
-		UserDTO userDTO = userMapper.userEntityToUserDTO(savedUser);
+		UserDTO userDTO = userMapper.toUserDTO(savedUser);
 		return ResponseEntity.ok(new AuthenticationResponseDTO(token, userDTO));
 	}
 
 	@GetMapping(ME_URL)
 	public ResponseEntity<UserDTO> getUserAuthenticated() {
 		UserEntity user = userService.getUserAuthenticated();
-		UserDTO userDTO = userMapper.userEntityToUserDTO(user);
+		UserDTO userDTO = userMapper.toUserDTO(user);
 		return ResponseEntity.ok(userDTO);
 	}
 
@@ -117,6 +117,6 @@ public class AuthController {
 		String newAccessToken = jwtService.generateToken(user);
 		jwtService.generateAndSetRefreshToken(user, response);
 
-		return ResponseEntity.ok(new AuthenticationResponseDTO(newAccessToken, userMapper.userEntityToUserDTO(user)));
+		return ResponseEntity.ok(new AuthenticationResponseDTO(newAccessToken, userMapper.toUserDTO(user)));
 	}
 }

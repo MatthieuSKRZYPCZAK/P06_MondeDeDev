@@ -30,9 +30,16 @@ public class ResponseMessages {
 	public static final String NEW_PASSWORD_MUST_BE_DIFFERENT = "New password must be different from old password.";
 	public static final String PASSWORD_UPDATE_SUCCESS = "Password updated successfully.";
 
-
 	// Topic-related errors
 	public static final String TOPIC_NOT_FOUND = "Topic not found: %s";
+
+	// Post-related errors
+	public static final String POST_NOT_FOUND = "Post not found.";
+
+	// Validation messages
+	public static final String TITLE_NOT_BLANK = "Title cannot be blank.";
+	public static final String CONTENT_NOT_BLANK = "Content cannot be blank.";
+	public static final String TOPIC_NOT_BLANK = "Topic is required.";
 
 	// Database errors
 	public static final String DATABASE_ERROR = "Database error. Please try again later.";

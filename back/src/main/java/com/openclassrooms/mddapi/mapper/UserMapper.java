@@ -17,7 +17,7 @@ public class UserMapper {
 		return userEntity;
 	}
 
-	public UserDTO userEntityToUserDTO(UserEntity userEntity) {
+	public UserDTO toUserDTO(UserEntity userEntity) {
 		return new UserDTO(
 				userEntity.getId(),
 				userEntity.getUsername(),

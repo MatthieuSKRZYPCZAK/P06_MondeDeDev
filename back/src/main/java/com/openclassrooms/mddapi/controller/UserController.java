@@ -34,7 +34,7 @@ public class UserController {
 
 		jwtService.generateAndSetRefreshToken(updatedUser, response);
 
-		UserDTO userDTO = userMapper.userEntityToUserDTO(updatedUser);
+		UserDTO userDTO = userMapper.toUserDTO(updatedUser);
 		return ResponseEntity.ok(userDTO);
 	}
 
@@ -49,13 +49,13 @@ public class UserController {
 	public ResponseEntity<UserDTO> subscribeToTopic(@PathVariable String topicName) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
 		UserEntity user = userService.subscribeToTopic(topicName, authenticatedUser);
-		return ResponseEntity.ok(userMapper.userEntityToUserDTO(user));
+		return ResponseEntity.ok(userMapper.toUserDTO(user));
 	}
 
 	@PostMapping(USER_UNSUBSCRIBE_TOPIC_URL)
 	public ResponseEntity<UserDTO> unsubscribeFromTopic(@PathVariable String topicName) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
 		UserEntity user = userService.unsubscribeFromTopic(topicName, authenticatedUser);
-		return ResponseEntity.ok(userMapper.userEntityToUserDTO(user));
+		return ResponseEntity.ok(userMapper.toUserDTO(user));
 	}
 }

@@ -158,4 +158,10 @@ public class GlobalExceptionHandler {
 		logger.info(e.getMessage());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
 	}
+
+	@ExceptionHandler(PostNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
+		logger.info(e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+	}
 }

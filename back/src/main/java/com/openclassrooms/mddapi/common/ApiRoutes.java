@@ -30,4 +30,12 @@ public class ApiRoutes {
 	/* Topics URL */
 	public static final String TOPIC_URL = BASE_URL+"/topics";
 
+	/* Posts URL */
+	public static final String POST_URL = BASE_URL+"/posts";
+
+	public static final String POST_FEED_URL = POST_URL+"/feed";
+
+	public static final String POST_DETAIL_URL = POST_URL+"/{postId}";
+
+
 }
