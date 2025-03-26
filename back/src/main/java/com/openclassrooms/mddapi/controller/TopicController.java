@@ -1,11 +1,11 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.TopicDTO;
-import com.openclassrooms.mddapi.model.TopicEnum;
+import com.openclassrooms.mddapi.service.TopicService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.openclassrooms.mddapi.common.ApiRoutes.TOPIC_URL;
@@ -13,17 +13,15 @@ import static com.openclassrooms.mddapi.common.ApiRoutes.TOPIC_URL;
 @RestController
 public class TopicController {
 
+	private final TopicService topicService;
 
-	@GetMapping(TOPIC_URL)
-	public List<TopicDTO> getTopics() {
-		return Arrays.stream(TopicEnum.values())
-				.map(topic -> new TopicDTO(
-						topic.name(),
-						topic.getLabel(),
-						topic.getDescription()
-				))
-				.toList();
+	public TopicController(TopicService topicService) {
+		this.topicService = topicService;
 	}
 
+	@GetMapping(TOPIC_URL)
+	public ResponseEntity<List<TopicDTO>> getTopics() {
+		return ResponseEntity.ok(topicService.getAllTopics());
+	}
 
 }
