@@ -5,9 +5,8 @@ import com.openclassrooms.mddapi.dto.RegistrationDTO;
 import com.openclassrooms.mddapi.dto.UserUpdateDTO;
 import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.mapper.UserMapper;
-import com.openclassrooms.mddapi.model.TopicEntity;
+import com.openclassrooms.mddapi.model.TopicEnum;
 import com.openclassrooms.mddapi.model.UserEntity;
-import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.security.UserDetailsImpl;
 import com.openclassrooms.mddapi.util.PasswordValidator;
@@ -37,17 +36,15 @@ public class UserService  {
 	private final UserMapper userMapper;
 	private final PasswordValidator passwordValidator;
 	private final UsernameValidator usernameValidator;
-	private final TopicRepository topicRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, PasswordValidator passwordValidator, UsernameValidator usernameValidator, TopicRepository topicRepository) {
+	public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, BCryptPasswordEncoder passwordEncoder, UserMapper userMapper, PasswordValidator passwordValidator, UsernameValidator usernameValidator) {
 		this.userRepository = userRepository;
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.userMapper = userMapper;
 		this.passwordValidator = passwordValidator;
 		this.usernameValidator = usernameValidator;
-		this.topicRepository = topicRepository;
 	}
 
 	/**
@@ -181,8 +178,8 @@ public class UserService  {
 	}
 
 	@Transactional
-	public UserEntity subscribeToTopic(Long topicId, UserEntity authenticatedUser) {
-		TopicEntity topic = topicRepository.findById(topicId).orElseThrow(() -> new TopicNotFoundException(TOPIC_NOT_FOUND));
+	public UserEntity subscribeToTopic(String topicName, UserEntity authenticatedUser) {
+		TopicEnum topic = getValidTopic(topicName);
 
 		if(authenticatedUser.getTopics().contains(topic)) {
 			return authenticatedUser;
@@ -193,8 +190,8 @@ public class UserService  {
 	}
 
 	@Transactional
-	public UserEntity unsubscribeFromTopic(Long topicId, UserEntity authenticatedUser) {
-		TopicEntity topic = topicRepository.findById(topicId).orElseThrow(() -> new TopicNotFoundException(TOPIC_NOT_FOUND));
+	public UserEntity unsubscribeFromTopic(String topicName, UserEntity authenticatedUser) {
+		TopicEnum topic = getValidTopic(topicName);
 
 		if(!authenticatedUser.getTopics().contains(topic)) {
 			return authenticatedUser;
@@ -202,6 +199,14 @@ public class UserService  {
 
 		authenticatedUser.getTopics().remove(topic);
 		return userRepository.save(authenticatedUser);
+	}
+
+	private TopicEnum getValidTopic(String topicName) {
+		try {
+			return TopicEnum.valueOf(topicName.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			throw new TopicNotFoundException(String.format(TOPIC_NOT_FOUND, topicName));
+		}
 	}
 
 	@Transactional

@@ -32,7 +32,7 @@ public class ResponseMessages {
 
 
 	// Topic-related errors
-	public static final String TOPIC_NOT_FOUND = "Topic not found.";
+	public static final String TOPIC_NOT_FOUND = "Topic not found: %s";
 
 	// Database errors
 	public static final String DATABASE_ERROR = "Database error. Please try again later.";

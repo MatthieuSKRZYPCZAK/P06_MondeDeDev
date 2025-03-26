@@ -23,13 +23,11 @@ public class ApiRoutes {
 
 	public static final String USER_PASSWORD_URL = USER_URL+"/password";
 
-	public static final String USER_SUBSCRIBE_TOPIC_URL = USER_URL+"/subscribe/{topicId}";
+	public static final String USER_SUBSCRIBE_TOPIC_URL = USER_URL+"/subscribe/{topicName}";
 
-	public static final String USER_UNSUBSCRIBE_TOPIC_URL = USER_URL+"/unsubscribe/{topicId}";
+	public static final String USER_UNSUBSCRIBE_TOPIC_URL = USER_URL+"/unsubscribe/{topicName}";
 
 	/* Topics URL */
-	public static final String TOPIC_URL = BASE_URL+"/topic";
-
-	public static final String TOPIC_ID_URL = TOPIC_URL+"/{id}";
+	public static final String TOPIC_URL = BASE_URL+"/topics";
 
 }

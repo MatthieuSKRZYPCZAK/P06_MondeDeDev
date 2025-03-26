@@ -46,16 +46,16 @@ public class UserController {
 	}
 
 	@PostMapping(USER_SUBSCRIBE_TOPIC_URL)
-	public ResponseEntity<UserDTO> subscribeToTopic(@PathVariable Long topicId) {
+	public ResponseEntity<UserDTO> subscribeToTopic(@PathVariable String topicName) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
-		UserEntity user = userService.subscribeToTopic(topicId, authenticatedUser);
+		UserEntity user = userService.subscribeToTopic(topicName, authenticatedUser);
 		return ResponseEntity.ok(userMapper.userEntityToUserDTO(user));
 	}
 
 	@PostMapping(USER_UNSUBSCRIBE_TOPIC_URL)
-	public ResponseEntity<UserDTO> unsubscribeFromTopic(@PathVariable Long topicId) {
+	public ResponseEntity<UserDTO> unsubscribeFromTopic(@PathVariable String topicName) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
-		UserEntity user = userService.unsubscribeFromTopic(topicId, authenticatedUser);
+		UserEntity user = userService.unsubscribeFromTopic(topicName, authenticatedUser);
 		return ResponseEntity.ok(userMapper.userEntityToUserDTO(user));
 	}
 }

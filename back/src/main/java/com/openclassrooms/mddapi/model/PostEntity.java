@@ -25,9 +25,9 @@ public class PostEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private UserEntity author;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "topic_id", nullable = false)
-	private TopicEntity topic;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private TopicEnum topic;
 
 	@CreatedDate
 	@Column(name = "created_at", nullable = false)
