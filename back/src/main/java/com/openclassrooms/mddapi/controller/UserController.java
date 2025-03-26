@@ -28,15 +28,14 @@ public class UserController {
 	}
 
 	@PutMapping(USER_UPDATE_URL)
-	public ResponseEntity<AuthenticationResponseDTO> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO, HttpServletResponse response) {
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO, HttpServletResponse response) {
 		UserEntity authenticatedUser = userService.getUserAuthenticated();
 		UserEntity updatedUser = userService.updateUser(userUpdateDTO, authenticatedUser);
 
-		String newAccessToken = jwtService.generateToken(updatedUser);
 		jwtService.generateAndSetRefreshToken(updatedUser, response);
 
 		UserDTO userDTO = userMapper.userEntityToUserDTO(updatedUser);
-		return ResponseEntity.ok(new AuthenticationResponseDTO(newAccessToken, userDTO));
+		return ResponseEntity.ok(userDTO);
 	}
 
 	@PatchMapping(USER_PASSWORD_URL)

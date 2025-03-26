@@ -14,13 +14,11 @@ import java.util.Collections;
 @Data
 public class UserDetailsImpl implements UserDetails {
 
-	private String email;
-	private String password;
+	private final UserEntity user;
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsImpl(UserEntity user) {
-		this.email = user.getEmail();
-		this.password = user.getPassword();
+		this.user = user;
 		this.authorities = Collections.emptyList();
 	}
 
@@ -31,11 +29,11 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return password;
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return email;
+		return user.getEmail();
 	}
 }

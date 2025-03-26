@@ -9,6 +9,7 @@ import com.openclassrooms.mddapi.model.TopicEntity;
 import com.openclassrooms.mddapi.model.UserEntity;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import com.openclassrooms.mddapi.security.UserDetailsImpl;
 import com.openclassrooms.mddapi.util.PasswordValidator;
 import com.openclassrooms.mddapi.util.UsernameValidator;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,7 +120,18 @@ public class UserService  {
 	 */
 	public UserEntity getUserAuthenticated() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return userRepository.findByEmail(auth.getName()).orElseThrow(() -> new InvalidJwtException(EXPIRED_JWT));
+
+		// Cas après le login (manuel): UserDetailsImpl est dans le SecurityContext
+		if(auth.getPrincipal() instanceof UserDetailsImpl user) {
+			return userRepository.findById(user.getUser().getId()).orElseThrow(() -> new InvalidJwtException(EXPIRED_JWT));
+		}
+
+		// Cas après appel avec JWT: le principal est un Jwt
+		if(auth.getPrincipal() instanceof Jwt jwt) {
+			Long userId = Long.parseLong(jwt.getSubject());
+			return userRepository.findById(userId).orElseThrow(() -> new InvalidJwtException(EXPIRED_JWT));
+		}
+		throw new InvalidJwtException(EXPIRED_JWT);
 	}
 
 	@Transactional
@@ -191,8 +204,6 @@ public class UserService  {
 		return userRepository.save(authenticatedUser);
 	}
 
-
-
 	@Transactional
 	public void updatePassword(@Valid PasswordUpdateDTO passwordUpdateDTO, UserEntity authenticatedUser) {
 
@@ -209,7 +220,7 @@ public class UserService  {
 		userRepository.save(authenticatedUser);
 	}
 
-	public UserEntity findByEmail(String email) {
-		return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+	public UserEntity findByUserId(Long userId) {
+		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 	}
 }

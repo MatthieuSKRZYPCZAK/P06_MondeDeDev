@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.security;
 
-import com.openclassrooms.mddapi.exception.InvalidJwtException;
 import com.openclassrooms.mddapi.model.UserEntity;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 
 import static com.openclassrooms.mddapi.common.ApiRoutes.JWT_REFRESH_URL;
-import static com.openclassrooms.mddapi.common.ResponseMessages.INVALID_JWT;
 
 @Service
 public class JwtService {
@@ -42,7 +40,7 @@ public class JwtService {
 	public String generateToken(UserEntity user) {
 		Instant now = Instant.now();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
-				.subject(user.getEmail())
+				.subject(String.valueOf(user.getId()))
 				.issuedAt(now)
 				.expiresAt(now.plusMillis(jwtExpirationInMs))
 				.build();
@@ -53,7 +51,7 @@ public class JwtService {
 	public void generateAndSetRefreshToken(UserEntity user, HttpServletResponse response) {
 		Instant now = Instant.now();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
-				.subject(user.getEmail())
+				.subject(String.valueOf(user.getId()))
 				.issuedAt(now)
 				.expiresAt(now.plusMillis(jwtRefreshExpirationInMs))
 				.build();
@@ -82,8 +80,8 @@ public class JwtService {
 		response.addCookie(deleteCookie);
 	}
 
-	public String extractEmailFromToken(String token) {
+	public Long extractUserIdFromToken(String token) {
 		Jwt decodedJwt = jwtDecoder.decode(token);
-		return decodedJwt.getSubject();
+		return Long.parseLong(decodedJwt.getSubject());
 	}
 }

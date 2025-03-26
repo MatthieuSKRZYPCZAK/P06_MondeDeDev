@@ -83,13 +83,10 @@ public class AuthController {
 
 	@PostMapping(JWT_REFRESH_URL)
 	public ResponseEntity<AuthenticationResponseDTO> refreshToken(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("Refresh token");
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) {
 			jwtService.clearRefreshToken(response);
 			throw new RefreshTokenException(REFRESH_TOKEN_NOT_FOUND);
-		} else {
-			System.out.println("Refresh token found");
 		}
 
 		String refreshToken = null;
@@ -105,16 +102,16 @@ public class AuthController {
 			throw new RefreshTokenException(INVALID_JWT);
 		}
 
-		String email;
+		Long userId;
 		try {
 			// Vérifier et extraire l'email depuis le refresh token
-			 email = jwtService.extractEmailFromToken(refreshToken);
+			 userId = jwtService.extractUserIdFromToken(refreshToken);
 		} catch (InvalidJwtException e) {
 			jwtService.clearRefreshToken(response);
 			throw new RefreshTokenException(INVALID_JWT);
 		}
 
-		UserEntity user = userService.findByEmail(email);
+		UserEntity user = userService.findByUserId(userId);
 
 		// Génère un nouvel access token et refresh token
 		String newAccessToken = jwtService.generateToken(user);
