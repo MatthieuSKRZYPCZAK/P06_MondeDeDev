@@ -1,0 +1,34 @@
+<mat-toolbar class="navbar" color="transparent" [class.hidden-routes]="shouldHideNavbar()">
+  <div>
+    <a routerLink="/" title="Retour à l'accueil">
+      <img src="assets/logo_p6.png" alt="Logo mini" class="logo" title="Monde de Dév" />
+    </a>
+  </div>
+  @if(authService.isAuthenticated()) {
+    <div class="link-container">
+      <a (click)="onLogout()" title="Se déconnecter" class="btn-logout">
+        Se déconnecter
+      </a>
+      <a
+        routerLink="/feed"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="navlink"
+        title="Voir les articles">
+
+        Articles
+      </a>
+      <a routerLink="/topics"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}"
+         class="navlink"
+         title="Voir les thèmes">
+
+        Thèmes
+      </a>
+      <a routerLink="/me" class="icon-profil" title="Voir mon profil">
+        <mat-icon>account_circle</mat-icon>
+      </a>
+    </div>
+  }
+</mat-toolbar>
