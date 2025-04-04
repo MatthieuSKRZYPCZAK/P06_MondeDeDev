@@ -19,10 +19,6 @@ export class MessageService {
     this.showMessage(message, 'Fermer', 3000, ['snackbar-error']);
   }
 
-  showSuccess(message: string): void {
-    this.showMessage(message, 'Fermer', 3000, ['snackbar-success']);
-  }
-
   showInfo(message: string): void {
     this.showMessage(message, 'Fermer', 3000, ['snackbar-info']);
   }

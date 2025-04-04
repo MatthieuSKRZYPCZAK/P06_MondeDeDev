@@ -4,5 +4,6 @@ export const MESSAGES = {
     INVALID_CREDENTIALS: "Identifiants invalides",
     DEFAULT: "Une erreur est survenue"
   },
-  LOGOUT_SUCCESS: "Déconnexion réussie"
+  LOGOUT_SUCCESS: "Déconnexion réussie",
+  LOGIN_SUCCESS: "Connexion réussie"
 };

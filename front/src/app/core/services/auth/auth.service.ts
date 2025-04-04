@@ -1,10 +1,12 @@
-import {Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LoginRequest} from '../../../features/auth/interfaces/loginRequest.interface';
 import {UserSessionInformation} from '../../../features/auth/interfaces/userSessionInformation.interface';
-import {Observable, tap} from 'rxjs';
+import {map, Observable, Subject, tap} from 'rxjs';
 import {ApiRoutes} from '../../api/api-routes';
 import {User} from '../../../features/auth/interfaces/user.interface';
+import {Router} from '@angular/router';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(credentials: LoginRequest): Observable<UserSessionInformation> {
-    return this.http.post<UserSessionInformation>(this.LOGIN_URL, credentials)
+    return this.http.post<UserSessionInformation>(this.LOGIN_URL, credentials, { withCredentials: true })
       .pipe(
         tap(response => {
           this.saveToken(response.token);
@@ -33,6 +35,24 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getRefreshToken(): Observable<UserSessionInformation> {
+    return this.http.post<UserSessionInformation>(ApiRoutes.auth.refresh, {}, { withCredentials: true })
+    .pipe(
+      tap((userSession: UserSessionInformation) => {
+        this.saveToken(userSession.token);
+        this.userSignal.set(userSession.user);
+      })
+    );
+  }
+
+  isAuthenticated$: Observable<boolean> = toObservable(
+    computed(() => !!this.userSignal())
+  );
+
+  getUser(): Signal<User | null> {
+    return this.userSignal.asReadonly();
   }
 
   getCurrentUser(): Observable<User> {
@@ -54,9 +74,5 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     this.userSignal.set(null);
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
   }
 }

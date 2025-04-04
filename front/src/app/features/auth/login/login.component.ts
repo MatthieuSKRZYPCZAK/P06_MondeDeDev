@@ -66,7 +66,8 @@ export class LoginComponent implements OnDestroy{
       .subscribe({
         next: (result) => {
           this.authService.saveToken(result.token);
-          this.router.navigate(['/feed']);
+          void this.router.navigate(['/feed']);
+          this.messageService.showInfo(MESSAGES.LOGIN_SUCCESS);
         },
         error: (err: HttpErrorResponse) => {
           this.handleError(err);
