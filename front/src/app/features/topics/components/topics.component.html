@@ -1,1 +1,21 @@
-<p>topics works!</p>
+
+@if(topics$ | async; as topics) {
+  <div class="topics-grid">
+    @for (topic of topics; track topic.name) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{topic.label}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{topic.description}}</p>
+        @if (userSignal()?.topics?.includes(topic.name)) {
+          <button class="button" disabled>Déjà abonné</button>
+        } @else {
+          <button class="button">S'abonner</button>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    }
+  </div>
+}
