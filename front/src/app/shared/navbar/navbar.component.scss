@@ -1,6 +1,7 @@
-@import '../../../styles/breakpoints';
+@import '../../../styles/styles';
 .navbar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
   box-shadow: none;
@@ -16,11 +17,11 @@
   }
 
   .navlink.active {
-    color: #7763C5;
+    color: $primary-color;
   }
 
   &.active {
-    color: #7763C5;
+    color: $primary-color;
     font-weight: bold;
   }
 
@@ -38,11 +39,28 @@
   }
 
   .btn-logout {
-    color: #A40F0F;
+    color: $danger-color;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   }
 
   .btn-logout:hover {
-    color: #e75b5b;
+    color: $danger-color-hover;
   }
+
+  .icon-profil {
+    color: $light-grey-color;
+  }
+
+  .icon-profil mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.link-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-right: 2rem;
 }

@@ -4,7 +4,7 @@
       <img src="assets/logo_p6.png" alt="Logo mini" class="logo" title="Monde de Dév" />
     </a>
   </div>
-  @if(authService.isAuthenticated()) {
+  @if(authService.isAuthenticated$ | async) {
     <div class="link-container">
       <a (click)="onLogout()" title="Se déconnecter" class="btn-logout">
         Se déconnecter

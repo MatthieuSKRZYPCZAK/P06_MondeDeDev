@@ -5,6 +5,7 @@ import {MatIcon} from '@angular/material/icon';
 import {AuthService} from '../../core/services/auth/auth.service';
 import {MessageService} from '../../core/services/message/message.service';
 import {MESSAGES} from '../../core/messages/messages';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,8 @@ import {MESSAGES} from '../../core/messages/messages';
     MatToolbar,
     RouterLink,
     MatIcon,
-    RouterLinkActive
+    RouterLinkActive,
+    AsyncPipe
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -22,7 +24,7 @@ export class NavbarComponent {
 
   constructor(
     private router: Router,
-    public authService: AuthService,
+    protected authService: AuthService,
     private messageService: MessageService
   ) {}
 
@@ -32,7 +34,7 @@ export class NavbarComponent {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['']);
+    void this.router.navigate(['']);
     this.messageService.showInfo(MESSAGES.LOGOUT_SUCCESS);
   }
 }
