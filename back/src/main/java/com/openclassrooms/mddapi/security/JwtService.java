@@ -60,7 +60,7 @@ public class JwtService {
 
 		Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
 		refreshTokenCookie.setHttpOnly(true);
-		refreshTokenCookie.setSecure(true);
+		refreshTokenCookie.setSecure(false);
 		refreshTokenCookie.setPath(JWT_REFRESH_URL);
 		refreshTokenCookie.setMaxAge(jwtRefreshExpirationInMs / 1000);
 
@@ -73,7 +73,7 @@ public class JwtService {
 	public void clearRefreshToken(HttpServletResponse response) {
 		Cookie deleteCookie = new Cookie("refreshToken", null);
 		deleteCookie.setHttpOnly(true);
-		deleteCookie.setSecure(true);
+		deleteCookie.setSecure(false);
 		deleteCookie.setPath(JWT_REFRESH_URL);
 		deleteCookie.setMaxAge(0); // Expiration immédiate
 
