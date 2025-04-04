@@ -1,0 +1,31 @@
+.mat-mdc-snack-bar-container.snackbar-error {
+  --mdc-snackbar-container-color: var(--error-color);
+
+  .mat-mdc-snack-bar-label {
+    color: white;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    color: white;
+  }
+
+  .mat-mdc-snack-bar-action .mdc-button__label {
+    color: lightgrey !important;
+  }
+}
+
+.mat-mdc-snack-bar-container.snackbar-info {
+  --mdc-snackbar-container-color: var(--primary-color);
+
+  .mat-mdc-snack-bar-label {
+    color: white;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    color: white;
+  }
+
+  .mat-mdc-snack-bar-action .mdc-button__label {
+    color: lightgrey !important;
+  }
+}

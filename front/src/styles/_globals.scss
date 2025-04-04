@@ -1,0 +1,94 @@
+@import './variables';
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+a {
+  cursor: pointer;
+}
+
+/* Global Button Styles */
+
+.button {
+  cursor: pointer;
+  border-radius: 8px;
+  color: white;
+  background-color: $primary-color;
+  width: 128px;
+  height: 40px;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+button.btn-primary {
+  font-size: 16px;
+  font-weight: bold;
+  color: black !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  padding-inline: 2.5rem;
+  padding-block: 0.75rem;
+  border-radius: 8px;
+}
+
+/* Global Back Button Styles */
+
+.back-icon {
+  color: black;
+}
+
+.back-container {
+  padding-top: 2rem;
+  padding-left: 3rem;
+}
+
+/* Global Loading Styles */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: $primary-color!important;
+}
+
+/* Global Form Styles */
+
+.error {
+  color: $error-color;
+  font-weight: bold;
+  margin-top: 0.25rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-field input {
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 8px;
+  height: 2rem;
+  width: 20rem;
+}
+
+
