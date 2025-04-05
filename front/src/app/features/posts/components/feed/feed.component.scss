@@ -1,0 +1,16 @@
+.feed-actions {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 2rem 2rem 0 2rem;
+
+  mat-icon {
+    cursor: pointer;
+  }
+
+  button {
+    width: auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
