@@ -1,10 +1,10 @@
 <mat-toolbar class="navbar" color="transparent" [class.hidden-routes]="shouldHideNavbar()">
   <div>
     <a routerLink="/" title="Retour à l'accueil">
-      <img src="assets/logo_p6.png" alt="Logo mini" class="logo" title="Monde de Dév" />
+      <img ngSrc="assets/logo_p6.png" alt="Logo mini" width="695" height="401" priority class="logo" title="Monde de Dév" />
     </a>
   </div>
-  @if(authService.isAuthenticated$ | async) {
+  @if(authService.isAuthenticated() | async) {
     <div class="link-container">
       <a (click)="onLogout()" title="Se déconnecter" class="btn-logout">
         Se déconnecter

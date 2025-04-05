@@ -1,15 +1,16 @@
 import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
 import {inject} from '@angular/core';
 import {AuthService} from '../auth/auth.service';
-import {Router} from '@angular/router';
 import {catchError, switchMap, throwError} from 'rxjs';
 import {ApiRoutes} from '../../api/api-routes';
+import {MessageService} from '../message/message.service';
+import {MESSAGES} from '../../messages/messages';
 
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   const authService = inject(AuthService);
-  const router = inject(Router);
+  const message = inject(MessageService);
   const token = authService.getToken();
 
   let requestToSend = req;
@@ -30,6 +31,14 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   return next(requestToSend).pipe(
     catchError((error: HttpErrorResponse) => {
       if(error.status === 401) {
+
+        const currentToken = authService.getToken();
+        if(!currentToken) {
+          authService.logout();
+          message.showInfo(MESSAGES.LOGOUT_SESSION);
+          return throwError(() => error);
+        }
+
         return authService.getRefreshToken().pipe(
           switchMap((userSession) => {
             const headers = req.headers.set('Authorization', 'Bearer ' + userSession.token);
@@ -40,11 +49,12 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
           }),
           catchError((err) => {
             authService.logout();
-            void router.navigate(['']);
-            return throwError(() => error);
+            message.showInfo(MESSAGES.LOGOUT_SESSION);
+            return throwError(() => err);
           })
         )
       }
+      message.showError(MESSAGES.ERROR);
       return throwError(() => error);
     })
   );

@@ -5,7 +5,7 @@ import {MatIcon} from '@angular/material/icon';
 import {AuthService} from '../../core/services/auth/auth.service';
 import {MessageService} from '../../core/services/message/message.service';
 import {MESSAGES} from '../../core/messages/messages';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +15,8 @@ import {AsyncPipe} from '@angular/common';
     RouterLink,
     MatIcon,
     RouterLinkActive,
-    AsyncPipe
+    AsyncPipe,
+    NgOptimizedImage
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'

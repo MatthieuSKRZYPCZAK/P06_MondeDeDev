@@ -3,6 +3,7 @@ import {TopicService} from '../services/topic.service';
 import {AsyncPipe} from '@angular/common';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {AuthService} from '../../../core/services/auth/auth.service';
+import {User} from '../../auth/interfaces/user.interface';
 
 
 @Component({
@@ -25,5 +26,17 @@ export class TopicsComponent {
 
   topics$ = this.topicService.getTopics();
   userSignal = this.authService.getUser();
+
+  subscribe(topicName: string) {
+    this.topicService.subscribeToTopic(topicName).subscribe((updatedUser: User) => {
+      this.authService.updateUser(updatedUser);
+    });
+  }
+
+  unsubscribe(topicName: string) {
+    this.topicService.unsubscribeFromTopic(topicName).subscribe((updatedUser: User) => {
+      this.authService.updateUser(updatedUser);
+    });
+  }
 
 }

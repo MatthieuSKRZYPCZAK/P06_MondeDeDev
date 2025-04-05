@@ -15,8 +15,11 @@
         <label for="username">Nom d'utilisateur</label>
         <input id="username" matInput formControlName="username" />
 
-        <div class="error" *ngIf="registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched">
-          Le nom d'utilisateur est requis
+        <div class="error-container">
+          <div class="error" *ngIf="errorMessages['username']">
+            {{ errorMessages['username'] }}
+          </div>
+
         </div>
       </div>
 
@@ -24,9 +27,11 @@
 
         <label for="email">Adresse e-mail</label>
         <input id="email" matInput formControlName="email" />
+        <div class="error-container">
+          <div class="error" *ngIf="errorMessages['email']">
+            {{ errorMessages['email'] }}
+          </div>
 
-        <div class="error" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
-          L'adresse e-mail est requise
         </div>
       </div>
 
@@ -34,12 +39,14 @@
         <label for="password">Mot de passe</label>
         <input id="password" matInput formControlName="password" type="password" />
 
-        <div class="error" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
-          Le mot de passe est requis
+        <div class="error-container">
+          <div class="error" *ngIf="errorMessages['password']">
+            {{ errorMessages['password'] }}
+          </div>
         </div>
       </div>
 
-      <button class="button" type="submit" [disabled]="registerForm.invalid || isLoading">S'inscrire</button>
+      <button class="button" type="submit" [disabled]="isLoading">S'inscrire</button>
       <div *ngIf="isLoading" class="loading-overlay">
         <mat-spinner diameter="50"></mat-spinner>
       </div>

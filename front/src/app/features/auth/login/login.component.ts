@@ -7,7 +7,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {AuthService} from '../../../core/services/auth/auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {LoginRequest} from '../interfaces/loginRequest.interface';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -40,7 +39,6 @@ export class LoginComponent implements OnDestroy{
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar,
     private messageService: MessageService,
     ) {
     this.loginForm = this.fb.group({
@@ -64,8 +62,7 @@ export class LoginComponent implements OnDestroy{
         finalize(() => this.isLoading = false),
       )
       .subscribe({
-        next: (result) => {
-          this.authService.saveToken(result.token);
+        next: () => {
           void this.router.navigate(['/feed']);
           this.messageService.showInfo(MESSAGES.LOGIN_SUCCESS);
         },
@@ -82,11 +79,11 @@ export class LoginComponent implements OnDestroy{
 
   private handleError(err: HttpErrorResponse) {
     if(err.status === 500 || err.status === 0) {
-      this.messageService.showError(MESSAGES.AUTH.SERVICE_UNAVAILABLE);
+      this.messageService.showError(MESSAGES.SERVICE_UNAVAILABLE);
     } else if(err.status === 401) {
-      this.messageService.showError(MESSAGES.AUTH.INVALID_CREDENTIALS);
+      this.messageService.showError(MESSAGES.INVALID_CREDENTIALS);
     } else {
-      this.messageService.showError(MESSAGES.AUTH.DEFAULT)
+      this.messageService.showError(MESSAGES.ERROR)
     }
   }
 }

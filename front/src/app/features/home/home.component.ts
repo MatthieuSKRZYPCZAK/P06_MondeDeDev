@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
+import {NgOptimizedImage} from '@angular/common';
 
 
 @Component({
@@ -9,6 +10,7 @@ import {RouterLink} from '@angular/router';
   imports: [
     MatButton,
     RouterLink,
+    NgOptimizedImage,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
