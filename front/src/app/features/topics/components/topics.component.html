@@ -9,9 +9,9 @@
       <mat-card-content>
         <p>{{topic.description}}</p>
         @if (userSignal()?.topics?.includes(topic.name)) {
-          <button class="button" (click)="unsubscribe(topic.name)">Déjà abonné</button>
+          <button class="button button-grey" (click)="unsubscribe(topic)">Déjà abonné</button>
         } @else {
-          <button class="button" (click)="subscribe(topic.name)">S'abonner</button>
+          <button class="button" (click)="subscribe(topic)">S'abonner</button>
         }
       </mat-card-content>
     </mat-card>
