@@ -1,4 +1,4 @@
-<div class="login-container">
+<div class="container">
   <div class="back-container">
     <a routerLink="/" class="back-icon" title="Retour">
       <mat-icon aria-label="back"  fontIcon="arrow_back"></mat-icon>
@@ -6,7 +6,7 @@
   </div>
   <div class="form-wrapper">
     <div>
-      <h2>Inscription</h2>
+      <h1>Inscription</h1>
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <button class="button" type="submit" [disabled]="isLoading">S'inscrire</button>
+      <button class="button button-form" type="submit" [disabled]="isLoading">S'inscrire</button>
       <div *ngIf="isLoading" class="loading-overlay">
         <mat-spinner diameter="50"></mat-spinner>
       </div>

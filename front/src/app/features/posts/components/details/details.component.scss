@@ -1,0 +1,80 @@
+@import '../../../../../styles/styles';
+.back-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.container {
+  font-size: 20px;
+}
+
+h1 {
+  margin: 0;
+  line-height: 1;
+}
+.details {
+  padding: 4rem;
+
+  span {
+    font-style: italic;
+  }
+}
+
+.details-header {
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  padding-bottom: 2rem;
+  gap: 3rem;
+}
+
+.post-content {
+  padding-bottom: 2rem;
+}
+
+.form-field textarea {
+  width: 570px;
+  height: 120px;
+}
+
+.form-field {
+  display: flex;
+  gap: 2rem;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.send-button {
+  all: unset;
+  cursor: pointer;
+  mat-icon {
+    width: 43px;
+    height: 43px;
+  }
+}
+
+.comments-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+}
+
+.comment-content {
+  width: 449px;
+  min-height: 100px;
+  border-radius: 16px;
+  background-color: $very-light-grey-color;
+  p {
+    padding: 0.5rem;
+  }
+}

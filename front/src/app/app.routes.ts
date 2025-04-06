@@ -40,6 +40,18 @@ export const routes: Routes = [
           import('./features/posts/components/feed/feed.component').then(m => m.FeedComponent),
       },
       {
+        path: 'post/new',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/posts/components/form/form.component').then(m => m.FormComponent),
+      },
+      {
+        path: 'post/:id',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/posts/components/details/details.component').then(m => m.DetailsComponent),
+      },
+      {
         path: 'topics',
         canActivate: [authGuard],
         loadComponent: () =>

@@ -47,7 +47,7 @@ export class RegisterComponent implements OnDestroy {
       username: ['', [Validators.required, usernameValidator()]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, passwordValidator()]],
-    })
+    });
   }
 
   onSubmit() {

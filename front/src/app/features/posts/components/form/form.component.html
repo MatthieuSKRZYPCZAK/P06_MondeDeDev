@@ -1,1 +1,64 @@
-<p>form works!</p>
+<div class="container">
+  <div class="back-container">
+    <a routerLink="/" class="back-icon" title="Retour">
+      <mat-icon aria-label="back"  fontIcon="arrow_back"></mat-icon>
+    </a>
+    <div>
+      <h1 class="title">Créer un nouvel article</h1>
+    </div>
+  </div>
+  <div class="form-wrapper">
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-field">
+          <input type="text"
+                 placeholder="Sélectionner un thème"
+                 aria-label="Sélectionner un thème"
+                 matInput
+                 formControlName="topicName"
+                 [matAutocomplete]="autocomplete">
+
+          <mat-autocomplete #autocomplete="matAutocomplete">
+            @if(filteredTopics.length > 0) {
+              @for(topic of filteredTopics; track topic.name) {
+                <mat-option [value]="topic.label">
+                  {{ topic.label }}
+                </mat-option>
+              }
+            } @else {
+              <mat-option disabled>Aucun thème trouvé</mat-option>
+            }
+          </mat-autocomplete>
+        <div class="error-container">
+          <div class="error" *ngIf="errorMessages['topic']">
+            {{ errorMessages['topic'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <input placeholder="Titre de l'article" matInput formControlName="title" />
+        <div class="error-container">
+          <div class="error" *ngIf="errorMessages['title']">
+            {{ errorMessages['title'] }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <textarea placeholder="Contenu de l'article" matInput formControlName="content"></textarea>
+        <div class="error-container">
+          <div class="error" *ngIf="errorMessages['content']">
+            {{ errorMessages['content'] }}
+          </div>
+        </div>
+      </div>
+
+      <button class="button button-form" type="submit" [disabled]="isLoading">Créer</button>
+      <div *ngIf="isLoading" class="loading-overlay">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    </form>
+  </div>
+</div>
+

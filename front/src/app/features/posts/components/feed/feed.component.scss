@@ -14,3 +14,60 @@
     padding-left: 1rem;
   }
 }
+
+.custom-header {
+  align-items: flex-start;
+}
+
+.header-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-subtitle {
+  width: 100%;
+  display: flex;
+  padding: 0;
+}
+
+mat-card {
+  cursor: pointer;
+}
+
+.no-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 300px;
+  gap: 1rem;
+  padding: 2rem;
+  color: #555;
+}
+
+.card-subtitle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  padding-top: 0.5rem;
+
+  span {
+    font-style: italic;
+  }
+}
+
+.card-subtitle .date {
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.card-subtitle .author {
+  position: absolute;
+  left: 50%;
+  transform: translateX(0);
+  white-space: nowrap;
+}
+

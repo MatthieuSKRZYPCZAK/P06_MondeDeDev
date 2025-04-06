@@ -1,9 +1,16 @@
 import {Component, inject, signal} from '@angular/core';
 import {AuthService} from '../../../../core/services/auth/auth.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {PostService} from '../../services/post.service';
-import {AsyncPipe, DatePipe} from '@angular/common';
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {AsyncPipe, DatePipe, SlicePipe} from '@angular/common';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle
+} from '@angular/material/card';
 import {map} from 'rxjs';
 import {MatIcon} from '@angular/material/icon';
 
@@ -18,7 +25,11 @@ import {MatIcon} from '@angular/material/icon';
     MatCardHeader,
     MatCardContent,
     MatCardTitle,
+    MatCardSubtitle,
     MatIcon,
+    SlicePipe,
+    RouterLink,
+    MatCardActions,
   ],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'

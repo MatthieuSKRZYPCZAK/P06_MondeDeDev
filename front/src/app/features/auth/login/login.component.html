@@ -1,4 +1,4 @@
-<div class="login-container">
+<div class="container">
   <div class="back-container">
     <a routerLink="/" class="back-icon" title="Retour">
       <mat-icon aria-label="back"  fontIcon="arrow_back"></mat-icon>
@@ -6,7 +6,7 @@
   </div>
   <div class="form-wrapper">
     <div>
-      <h2>Se connecter</h2>
+      <h1>Se connecter</h1>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <button class="button" type="submit" [disabled]="loginForm.invalid || isLoading">Se connecter</button>
+      <button class="button button-form" type="submit" [disabled]="loginForm.invalid || isLoading">Se connecter</button>
       <div *ngIf="isLoading" class="loading-overlay">
         <mat-spinner diameter="50"></mat-spinner>
       </div>

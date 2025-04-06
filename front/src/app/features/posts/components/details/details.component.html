@@ -1,1 +1,63 @@
-<p>details works!</p>
+<div class="container">
+  <div class="back-container ">
+    <a routerLink="/feed" class="back-icon" title="Retour">
+      <mat-icon aria-label="back"  fontIcon="arrow_back"></mat-icon>
+    </a>
+    @if(post && !isLoading){
+      <h1>{{ post.title }}</h1>
+    }
+  </div>
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  @if(post && !isLoading){
+  <div class="details">
+    <div class="details-header">
+      <p>Le <span>{{ post.createdAt | date:'d MMMM yyyy' :'':'fr' }}</span></p>
+      <p class="author">Par <span>{{ post.author.username }}</span></p>
+      <p><strong>{{ post.topic.label }}</strong></p>
+    </div>
+    <div class="post-content">
+      {{ post.content }}
+    </div>
+    <hr/>
+    <div class="comments-container">
+      <p>Commentaires</p>
+
+      @if(post.comments.length === 0) {
+        <p><span>Aucun commentaire</span></p>
+      }
+
+      @for(comment of post.comments; track comment.id){
+        <div class="comment-container">
+          <div class="comment-author">
+            <p>{{ comment.author.username }}</p>
+          </div>
+          <div class="comment-content">
+            <p>{{ comment.content}}</p>
+          </div>
+        </div>
+      }
+
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+          <div class="form-field">
+            <textarea placeholder="Écrivez ici votre commentaire" matInput formControlName="content"></textarea>
+            <button type="submit" class="send-button" [disabled]="isCommentInvalid">
+              <mat-icon svgIcon="paper-plane" title="Envoyez"></mat-icon>
+            </button>
+          </div>
+        </form>
+    </div>
+  </div>
+
+  }
+
+  @if(!isLoading && !post) {
+    <div>
+      <p>Post non trouvé.</p>
+    </div>
+  }
+
+
+</div>
