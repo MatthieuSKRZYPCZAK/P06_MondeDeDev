@@ -17,7 +17,10 @@ public class PostEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String title;
+
+	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 
 	@ManyToOne(optional = false)
