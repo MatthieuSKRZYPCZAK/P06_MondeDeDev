@@ -4,10 +4,16 @@ html, body { height: 100%; }
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
+  font-size: 16px;
 }
 
 a {
   cursor: pointer;
+}
+
+h1, h2 {
+  font-size: 24px !important;
+  font-weight: 700;
 }
 
 /* Global Button Styles */
@@ -17,11 +23,20 @@ a {
   border-radius: 8px;
   color: white;
   background-color: $primary-color;
-  width: 128px;
+  width: 166px;
   height: 40px;
   border: none;
   font-weight: bold;
   font-size: 16px;
+}
+
+.button-form {
+  display: block;
+  margin: 1rem auto 0 auto;
+}
+
+.button-grey {
+ background-color: $grey-color;
 }
 
 button.btn-primary {
@@ -67,6 +82,7 @@ button.btn-primary {
 /* Global Form Styles */
 
 .error-container {
+  max-width: 300px;
   min-height: 20px;
   display: flex;
   flex-direction: column;
@@ -83,6 +99,27 @@ button.btn-primary {
   text-align: center;
 }
 
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-wrapper {
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
 .form-field {
   display: flex;
   flex-direction: column;
@@ -93,9 +130,10 @@ button.btn-primary {
 .form-field label {
   font-weight: 500;
   margin-bottom: 0.25rem;
+  align-self: flex-start;
 }
 
-.form-field input {
+.form-field input, mat-select, textarea {
   padding: 0.5rem;
   border: 1px solid black;
   border-radius: 8px;
@@ -103,4 +141,8 @@ button.btn-primary {
   width: 20rem;
 }
 
-
+input, mat-select, textarea {
+  color: black;
+  font-weight: 400;
+  font-size: 20px;
+}
