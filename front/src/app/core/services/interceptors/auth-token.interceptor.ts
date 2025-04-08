@@ -54,7 +54,6 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
           })
         )
       }
-      message.showError(MESSAGES.ERROR);
       return throwError(() => error);
     })
   );

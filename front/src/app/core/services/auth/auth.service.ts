@@ -2,11 +2,14 @@ import {Injectable, Signal, signal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LoginRequest} from '../../../features/auth/interfaces/loginRequest.interface';
 import {UserSessionInformation} from '../../../features/auth/interfaces/userSessionInformation.interface';
-import {catchError, map, Observable, of, switchMap, tap, throwError} from 'rxjs';
+import {catchError, empty, map, Observable, of, switchMap, tap, throwError} from 'rxjs';
 import {ApiRoutes} from '../../api/api-routes';
 import {User} from '../../../features/auth/interfaces/user.interface';
 import {Router} from '@angular/router';
 import {RegisterRequest} from '../../../features/auth/interfaces/registerRequest.interface';
+import {UserUpdateRequest} from '../../../features/me/interfaces/userUpdateRequest.interface';
+import {UserUpdatePasswordRequest} from '../../../features/me/interfaces/userUpdatePasswordRequest.interface';
+import {ResponseDTO} from '../../interfaces/responseDTO.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -108,6 +111,26 @@ export class AuthService {
   updateUser(user: User) {
     this.userSignal.set(user);
   }
+
+  updateProfile(payload: UserUpdateRequest): Observable<User> {
+    return this.http.put<User>(ApiRoutes.user.update, payload, { withCredentials: true })
+      .pipe(
+        tap(user => {
+          this.userSignal.set(user);
+        }),
+        catchError(error => {
+          if (error.status === 401) {
+            return this.handleUnauthorizedError();
+          }
+          return throwError(() => error);
+        })
+      );
+  }
+
+  updatePassword(payload: UserUpdatePasswordRequest): Observable<ResponseDTO> {
+    return this.http.patch<ResponseDTO>(ApiRoutes.user.changePassword, payload, { withCredentials: true });
+  }
+
 
   logout(): void {
     localStorage.removeItem('token');

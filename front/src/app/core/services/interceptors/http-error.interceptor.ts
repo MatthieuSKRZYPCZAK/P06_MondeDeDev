@@ -10,18 +10,9 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status >= 400) {
-        // todo
-        if (error.status === 409) {
-          // todo
-        } else if (error.status === 500 || error.status === 0) {
-          messageService.showError(MESSAGES.SERVICE_UNAVAILABLE);
-        } else {
-          messageService.showError(MESSAGES.ERROR);
-        }
-
+      if (error.status === 500 || error.status === 0) {
+        messageService.showError(MESSAGES.SERVICE_UNAVAILABLE);
       }
-
       return throwError(() => error);
     })
   );

@@ -31,7 +31,7 @@ export const routes: Routes = [
         path: 'me',
         canActivate: [authGuard],
         loadComponent: () =>
-          import('./features/me/components/me.component').then(m => m.MeComponent),
+          import('./features/me/components/me/me.component').then(m => m.MeComponent),
       },
       {
         path: 'feed',

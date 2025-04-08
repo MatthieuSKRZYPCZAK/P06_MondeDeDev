@@ -1,0 +1,19 @@
+@import '../../../../../styles/styles';
+
+mat-divider {
+  border-top: 1px solid black;
+  margin: 2rem 5rem 2rem 5rem;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.form-field input {
+  border: 2px solid $primary-color;
+  width: 281px;
+  height: 48px;
+  box-sizing: border-box;
+}

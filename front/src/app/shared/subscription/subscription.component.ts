@@ -1,47 +1,37 @@
 import {Component, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {Topic} from '../../topics/interfaces/topic.interface';
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {User} from '../../features/auth/interfaces/user.interface';
+import {Topic} from '../../features/topics/interfaces/topic.interface';
 import {Subject, takeUntil} from 'rxjs';
-import {TopicService} from '../../topics/services/topic.service';
-import {AuthService} from '../../../core/services/auth/auth.service';
-import {User} from '../../auth/interfaces/user.interface';
-import {MESSAGES} from '../../../core/messages/messages';
-import {MessageService} from '../../../core/services/message/message.service';
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
-
+import {AuthService} from '../../core/services/auth/auth.service';
+import {TopicService} from '../../features/topics/services/topic.service';
+import {MessageService} from '../../core/services/message/message.service';
+import {MESSAGES} from '../../core/messages/messages';
+import {RouterLink} from '@angular/router';
 
 @Component({
-  selector: 'app-me',
+  selector: 'app-subscription',
   standalone: true,
   imports: [
     MatCard,
-    MatCardHeader,
     MatCardContent,
     MatCardHeader,
     MatCardTitle,
-    ReactiveFormsModule
+    RouterLink
   ],
-  templateUrl: './me.component.html',
-  styleUrl: './me.component.scss'
+  templateUrl: './subscription.component.html',
+  styleUrl: './subscription.component.scss'
 })
-export class MeComponent implements OnDestroy {
-  profileForm: FormGroup;
+export class SubscriptionComponent implements OnDestroy {
   user?: User;
   topics: Topic[] = [];
   private readonly destroy$ = new Subject<void>();
 
-
   constructor(
-    private fb: FormBuilder,
     private authService: AuthService,
     private topicService: TopicService,
     private messageService: MessageService,
   ) {
-    this.profileForm = this.fb.group({
-      username: [''],
-      email: [''],
-      password: [''],
-    });
 
     this.topicService.getTopics()
       .pipe(takeUntil(this.destroy$))
@@ -53,11 +43,6 @@ export class MeComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
         this.user = user;
-        this.profileForm.patchValue({
-          username: user.username,
-          email: user.email,
-          password: '',
-        });
       });
   }
 
@@ -78,7 +63,5 @@ export class MeComponent implements OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-}{
-
 
 }

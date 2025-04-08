@@ -1,0 +1,23 @@
+<h2>Abonnements</h2>
+
+@if(userTopics.length === 0) {
+  <div class="no-content">
+    <p>Vous n'êtes actuellement abonné à aucune thématique.</p>
+    <p>Abonnez-vous à des thématiques pour découvrir du contenu correspondant à vos intérêts !</p>
+    <button routerLink="/topics" class="button" title="Voir les thèmes">Voir les thèmes</button>
+  </div>
+}
+
+<div class="grid">
+  @for(topic of userTopics; track topic.name) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ topic.label }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ topic.description }}</p>
+        <button class="button" (click)="unsubscribe(topic)">Se désabonner</button>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

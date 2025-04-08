@@ -1,7 +1,7 @@
 <mat-toolbar class="navbar" color="transparent" [class.hidden-routes]="shouldHideNavbar()">
   <div>
     <a routerLink="/" title="Retour à l'accueil">
-      <img ngSrc="assets/logo_p6.png" alt="Logo mini" width="695" height="401" priority class="logo" title="Monde de Dév" />
+      <img ngSrc="assets/logo_p6.png" alt="Logo Monde de Dév" width="695" height="401" priority class="logo" title="Monde de Dév" />
     </a>
   </div>
   @if(authService.isAuthenticated() | async) {
@@ -26,9 +26,18 @@
 
         Thèmes
       </a>
-      <a routerLink="/me" class="icon-profil" title="Voir mon profil">
-        <mat-icon>account_circle</mat-icon>
+      <a routerLink="/me"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}"
+         class="icon-profil"
+         title="Voir mon profil">
+
+        <mat-icon [svgIcon]="isProfileRoute() ? 'profil-active' : 'profil'" title="Mon profil"></mat-icon>
       </a>
     </div>
+
+    <button mat-icon-button class="burger-menu" (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
   }
 </mat-toolbar>

@@ -29,11 +29,39 @@
     font-weight: bold;
   }
 
+  .burger-menu {
+    display: none;
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
   // Téléphone & tablette
   @include respond-to(tablet) {
 
-    &.hidden-routes {
+    .link-container {
       display: none;
+    }
+
+    .burger-menu {
+      display: none;
+      margin-left: auto;
+      background: none;
+      border: none;
+      padding: 0;
+      width: 56px;
+      height: 56px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+      }
     }
   }
 

@@ -94,31 +94,31 @@ export class RegisterComponent implements OnDestroy {
     const usernameCtrl = this.registerForm.get('username');
     if (usernameCtrl?.errors) {
       if (usernameCtrl.hasError('required')) {
-        this.errorMessages['username'] = "Le nom d'utilisateur est requis.";
+        this.errorMessages['username'] = MESSAGES.USERNAME_REQUIRED;
       } else if (usernameCtrl.hasError('alreadyExists')) {
-        this.errorMessages['username'] = "Ce nom d'utilisateur est déjà utilisé.";
+        this.errorMessages['username'] = MESSAGES.USERNAME_ALREADY_EXISTS;
       } else if (usernameCtrl.hasError('invalidUsername')) {
-        this.errorMessages['username'] = "Le nom d'utilisateur doit contenir entre 3 et 20 caractères, uniquement lettres et chiffres.";
+        this.errorMessages['username'] = MESSAGES.USERNAME_INVALID;
       }
     }
 
     const emailCtrl = this.registerForm.get('email');
     if (emailCtrl?.errors) {
       if (emailCtrl.hasError('required')) {
-        this.errorMessages['email'] = "L'adresse e-mail est requise.";
+        this.errorMessages['email'] = MESSAGES.EMAIL_REQUIRED;
       } else if (emailCtrl.hasError('alreadyExists')) {
-        this.errorMessages['email'] = "Cette adresse e-mail est déjà utilisée.";
+        this.errorMessages['email'] = MESSAGES.EMAIL_ALREADY_EXISTS;
       } else if (emailCtrl.hasError('email')) {
-        this.errorMessages['email'] = "Le format de l'adresse e-mail est invalide.";
+        this.errorMessages['email'] = MESSAGES.EMAIL_INVALID;
       }
     }
 
     const passwordCtrl = this.registerForm.get('password');
     if (passwordCtrl?.errors) {
       if (passwordCtrl.hasError('required')) {
-        this.errorMessages['password'] = "Le mot de passe est requis.";
+        this.errorMessages['password'] = MESSAGES.PASSWORD_REQUIRED;
       } else if (passwordCtrl.hasError('invalidPassword')) {
-        this.errorMessages['password'] = "Le mot de passe doit avoir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+        this.errorMessages['password'] = MESSAGES.PASSWORD_INVALID;
       }
     }
   }
