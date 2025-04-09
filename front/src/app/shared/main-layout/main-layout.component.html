@@ -1,2 +1,96 @@
-<app-navbar />
-<router-outlet />
+<mat-sidenav-container class="sidenav-container">
+
+
+  <mat-sidenav #sidenav mode="over" position="end" [autoFocus]="false" class="sidenav">
+    <div class="menu-mobile">
+      <div class="top-links">
+        <a (click)="onLogout(); sidenav.close()" class="btn-logout title-logout" title="Se déconnecter">
+          Se déconnecter
+        </a>
+
+        <a
+          routerLink="/feed"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          (click)="sidenav.close()"
+          class="navlink"
+          title="Voir les articles">
+          Articles
+        </a>
+
+        <a
+          routerLink="/topics"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          (click)="sidenav.close()"
+          class="navlink"
+          title="Voir les thèmes">
+          Thèmes
+        </a>
+      </div>
+
+      <div class="bottom-link">
+        <a
+          routerLink="/me"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          (click)="sidenav.close()"
+          class="icon-profil"
+          title="Voir mon profil">
+          <mat-icon [svgIcon]="isProfileRoute() ? 'profil-active' : 'profil'"></mat-icon>
+        </a>
+      </div>
+    </div>
+  </mat-sidenav>
+
+
+
+
+
+
+  <mat-toolbar class="navbar" color="transparent" [class.hidden-routes]="shouldHideNavbar()">
+    <div>
+      <a routerLink="/" title="Retour à l'accueil">
+        <img ngSrc="assets/logo_p6.png" alt="Logo Monde de Dév" width="695" height="401" priority class="logo" title="Monde de Dév" />
+      </a>
+    </div>
+    @if(authService.isAuthenticated() | async) {
+      <div class="link-container">
+        <a (click)="onLogout()" title="Se déconnecter" class="btn-logout title-logout">
+          Se déconnecter
+        </a>
+        <a
+          routerLink="/feed"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="navlink"
+          title="Voir les articles">
+
+          Articles
+        </a>
+        <a routerLink="/topics"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="navlink"
+           title="Voir les thèmes">
+
+          Thèmes
+        </a>
+        <a routerLink="/me"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="icon-profil"
+           title="Voir mon profil">
+
+          <mat-icon [svgIcon]="isProfileRoute() ? 'profil-active' : 'profil'" title="Mon profil"></mat-icon>
+        </a>
+      </div>
+
+      <button mat-icon-button class="burger-menu" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+  </mat-toolbar>
+
+  <router-outlet />
+</mat-sidenav-container>
