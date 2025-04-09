@@ -7,6 +7,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entité représentant un article (post) publié par un utilisateur dans l'application.
+ * <p>
+ * Chaque article possède un titre, un contenu, un auteur (utilisateur), un thème (topic) et une date de création.
+ * La date de création est automatiquement renseignée lors de l'enregistrement grâce à l'auditing.
+ * </p>
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)

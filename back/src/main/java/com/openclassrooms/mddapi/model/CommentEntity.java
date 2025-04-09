@@ -9,6 +9,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entité représentant un commentaire associé à un article (Post) dans l'application.
+ * <p>
+ * Chaque commentaire est lié à un auteur (utilisateur) et à un article.
+ * Lorsqu'un article est supprimé, tous ses commentaires sont également supprimés en cascade.
+ * Le champ {@code createdAt} est automatiquement rempli lors de la création du commentaire grâce à l'auditing.
+ * </p>
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)

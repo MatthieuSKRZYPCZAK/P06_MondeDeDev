@@ -13,7 +13,20 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Entité représentant un utilisateur de l'application.
+ * <p>
+ * Chaque utilisateur possède :
+ * <ul>
+ *     <li>un nom d'utilisateur unique ({@code username}),</li>
+ *     <li>une adresse e-mail unique et valide ({@code email}),</li>
+ *     <li>un mot de passe sécurisé ({@code password}),</li>
+ *     <li>un ensemble de thèmes abonnés ({@code topics}),</li>
+ *     <li>des dates d'audit de création ({@code createdAt}) et de dernière modification ({@code updatedAt}).</li>
+ * </ul>
+ * Les contraintes de validation sont appliquées sur les champs critiques pour garantir l'intégrité des données.
+ * </p>
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)

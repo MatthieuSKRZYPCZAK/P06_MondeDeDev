@@ -76,4 +76,14 @@ public class ApiRoutes {
 
 	/** URL pour ajouter un commentaire à un article */
 	public static final String POST_COMMENT_URL = POST_DETAIL_URL+"/comment";
+
+
+	/* =========================
+	 *         SWAGGER-UI
+	 * ========================= */
+
+	/* Swagger UI - Api docs */
+	public static final String SWAGGER_UI_URL = BASE_URL+"/swagger-ui";
+
+	public static final String API_DOCS_URL = BASE_URL+"/api-docs";
 }

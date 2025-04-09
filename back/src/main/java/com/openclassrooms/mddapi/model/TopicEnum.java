@@ -2,6 +2,17 @@ package com.openclassrooms.mddapi.model;
 
 import lombok.Getter;
 
+/**
+ * Énumération représentant les différents thèmes (topics) disponibles dans l'application.
+ * <p>
+ * Chaque thème est défini par :
+ * <ul>
+ *     <li>un {@code label} lisible par l'utilisateur (ex: "Java", "Python")</li>
+ *     <li>une {@code description} détaillant le thème et son utilité</li>
+ * </ul>
+ * Ces thèmes permettent de catégoriser les articles et de personnaliser les abonnements des utilisateurs.
+ * </p>
+ */
 @Getter
 public enum TopicEnum {
 	JAVA("Java", "Un langage de programmation orienté objet puissant et polyvalent, largement utilisé pour créer des applications évolutives, particulièrement dans les environnements d'entreprise."),

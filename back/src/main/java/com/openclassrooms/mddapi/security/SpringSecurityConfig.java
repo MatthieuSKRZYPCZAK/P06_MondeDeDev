@@ -38,7 +38,9 @@ public class SpringSecurityConfig {
 						.requestMatchers(
 								REGISTER_URL,
 								LOGIN_URL,
-								JWT_REFRESH_URL
+								JWT_REFRESH_URL,
+								API_DOCS_URL+"/**",
+								SWAGGER_UI_URL+"/**"
 						).permitAll() // Routes publiques
 						.anyRequest().authenticated() // Tout le reste nécessite un JWT
 				)
