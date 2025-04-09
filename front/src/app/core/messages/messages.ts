@@ -17,6 +17,10 @@ export const MESSAGES = {
   // Articles
   POST_CREATED_SUCCESS: "Article publié avec succès ! 🚀",
   COMMENT_SENT_SUCCESS: "Commentaire envoyé avec succès ! 💬",
+  THEME_INVALID: "Veuillez sélectionner un thème valide",
+  THEME_REQUIRED: "Le choix du thème est requis",
+  TITLE_REQUIRED: "Le titre de l'article est requis",
+  CONTENT_REQUIRED: "Le contenu de l'article est requis.",
 
   // Utilisateur
   USERNAME_REQUIRED: "Le nom d'utilisateur est requis.",

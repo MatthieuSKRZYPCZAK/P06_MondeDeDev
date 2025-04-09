@@ -64,7 +64,7 @@ export class FormComponent implements OnDestroy {
     this.topics$.subscribe(topics => {
       this.filteredTopics = topics;
 
-      this.postForm.get('topic')?.valueChanges.pipe(
+      this.postForm.get('topicName')?.valueChanges.pipe(
         startWith(''),
         map(value => this.filterTopics(value || '', topics))
       ).subscribe(filtered => {
@@ -82,7 +82,7 @@ export class FormComponent implements OnDestroy {
       const selectedTopic = this.filteredTopics.find(topic => topic.label === selectedLabel);
 
       if(!selectedTopic) {
-        this.messageService.showError('Veuillez sélectionner un thème valide');
+        this.messageService.showError(MESSAGES.THEME_INVALID);
         this.isLoading = false;
         return;
       }
@@ -132,21 +132,21 @@ export class FormComponent implements OnDestroy {
     const topicCtrl = this.postForm.get('topicName');
     if (topicCtrl?.errors) {
       if (topicCtrl.hasError('required')) {
-        this.errorMessages['topic'] = "Le choix du thème est requis";
+        this.errorMessages['topic'] = MESSAGES.THEME_REQUIRED;
       }
     }
 
     const titleCtrl = this.postForm.get('title');
     if (titleCtrl?.errors) {
       if (titleCtrl.hasError('required')) {
-        this.errorMessages['title'] = "Le titre de l'article est requis";
+        this.errorMessages['title'] = MESSAGES.TITLE_REQUIRED;
       }
     }
 
     const contentCtrl = this.postForm.get('content');
     if (contentCtrl?.errors) {
       if (contentCtrl.hasError('required')) {
-        this.errorMessages['content'] = "Le contenu de l'article est requis.";
+        this.errorMessages['content'] = MESSAGES.CONTENT_REQUIRED;
       }
     }
   }
