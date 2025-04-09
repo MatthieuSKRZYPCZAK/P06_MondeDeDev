@@ -169,6 +169,18 @@ export class MeComponent implements OnDestroy {
                 next: () => {
                   this.messageService.showInfo(MESSAGES.PROFILE_UPDATE_SUCCESS);
                   this.profileForm.patchValue({ password: '' });
+
+                  this.authService.getCurrentUser()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe(user => {
+                      this.user = user;
+                      this.profileForm.patchValue({
+                        username: user.username,
+                        email: user.email,
+                        newPassword: '',
+                      });
+                    });
+
                 },
                 error: (error) => {
                   this.handleError(error);
