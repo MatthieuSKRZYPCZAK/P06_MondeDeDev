@@ -6,7 +6,7 @@ import {PostService} from '../../services/post.service';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {CommonModule, DatePipe} from '@angular/common';
 import {MatIcon, MatIconRegistry} from '@angular/material/icon';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInput} from '@angular/material/input';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MessageService} from '../../../../core/services/message/message.service';
