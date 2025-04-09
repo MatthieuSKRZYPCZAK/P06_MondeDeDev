@@ -308,7 +308,7 @@ For detailed information on request/response formats, refer to the **Swagger UI*
 | HTTP Method | Endpoint                        | Description                                | Authentication Required |
 |:------------|:---------------------------------|:-------------------------------------------|:-------------------------|
 | PUT         | `/api/user/update`               | Update authenticated user's profile       | Yes                     |
-| PUT         | `/api/user/password`             | Update authenticated user's password      | Yes                     |
+| PATCH       | `/api/user/password`             | Update authenticated user's password      | Yes                     |
 | POST        | `/api/user/subscribe/{topicName}` | Subscribe to a topic                      | Yes                     |
 | POST        | `/api/user/unsubscribe/{topicName}` | Unsubscribe from a topic                | Yes                     |
 
