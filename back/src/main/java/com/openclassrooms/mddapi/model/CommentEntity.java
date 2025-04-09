@@ -2,6 +2,8 @@ package com.openclassrooms.mddapi.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -26,6 +28,7 @@ public class CommentEntity {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name="post_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private PostEntity post;
 
 	@CreatedDate
