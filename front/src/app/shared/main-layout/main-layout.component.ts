@@ -8,6 +8,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MessageService} from '../../core/services/message/message.service';
 import {MESSAGES} from '../../core/messages/messages';
 import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
+import {MatIconButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-main-layout',
@@ -21,7 +22,8 @@ import {MatSidenav, MatSidenavContainer} from '@angular/material/sidenav';
     RouterLink,
     RouterLinkActive,
     MatSidenavContainer,
-    MatSidenav
+    MatSidenav,
+    MatIconButton
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss'
