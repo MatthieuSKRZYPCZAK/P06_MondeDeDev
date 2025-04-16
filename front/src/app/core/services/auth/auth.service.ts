@@ -1,5 +1,5 @@
 import {Injectable, Signal, signal} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {LoginRequest} from '../../../features/auth/interfaces/loginRequest.interface';
 import {UserSessionInformation} from '../../../features/auth/interfaces/userSessionInformation.interface';
 import {catchError, map, Observable, of, switchMap, tap, throwError} from 'rxjs';
