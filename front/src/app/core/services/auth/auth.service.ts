@@ -84,15 +84,7 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<User> {
-    const token = this.getToken();
-    if(!token) {
-      return throwError(() => new Error('No token found'));
-    }
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.get<User>(ApiRoutes.auth.me, { headers })
+    return this.http.get<User>(ApiRoutes.auth.me)
       .pipe(
         tap(user => this.userSignal.set(user)),
         catchError(error => {
@@ -141,16 +133,7 @@ export class AuthService {
   private handleUnauthorizedError(): Observable<User> {
     return this.getRefreshToken().pipe(
       switchMap(() => {
-        const newToken = this.getToken();
-        if (!newToken) {
-          return throwError(() => new Error('Refresh failed'));
-        }
-
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${newToken}`
-        });
-
-        return this.http.get<User>(this.ME_URL, { headers }).pipe(
+        return this.http.get<User>(this.ME_URL).pipe(
           tap(user => this.userSignal.set(user))
         );
       }),
